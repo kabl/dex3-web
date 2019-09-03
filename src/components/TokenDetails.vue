@@ -1,12 +1,18 @@
 <template>
-  <div class="border border-primary">
-    <div>Address: {{ erc20Token.address }}</div>
-    <div>Name: {{ erc20Token.name }} / {{ erc20Token.symbol }}</div>
-    <div>Balance: {{ erc20Token.balance }}</div>
-    <div>DEX Allowance: {{ erc20Token.dexAllowance }}</div>
-    <button v-on:click="dexAllow">DEX Allow</button>
-    <button v-on:click="dexDeny">DEX Deny</button>
-  </div>
+  <md-card md-with-hover>
+      <md-card-header>
+        <div class="md-title">{{ erc20Token.name }} / {{ erc20Token.symbol }}</div>
+        <div class="md-subhead">{{ erc20Token.address }}</div>
+      </md-card-header>
+      <md-card-content>
+        <div>Balance: {{ erc20Token.balance }}</div>
+        <div>DEX Allowance: {{ erc20Token.dexAllowance }}</div>
+      </md-card-content>
+      <md-card-actions>
+        <md-button class="md-raised md-accent" v-on:click="dexAllow">DEX Allow</md-button>
+        <md-button class="md-raised md-accent" v-on:click="dexDeny">DEX Deny</md-button>
+      </md-card-actions>
+  </md-card>
 </template>
 
 <script>
@@ -25,7 +31,7 @@ export default {
     };
   },
   created: async function() {
-     await this.refresh();
+    await this.refresh();
     this.interval = setInterval(this.refresh, 2000);
   },
   methods: {

@@ -8,7 +8,7 @@
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons"
     />
     <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/vue-material.min.css" />
-    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default.css" />
+    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default-dark.css" />
   </head>
   <body>
     <div id="app">

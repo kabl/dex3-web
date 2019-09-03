@@ -1,13 +1,11 @@
 <template>
   <div>
     <TokenAddress @tokenaddress-submitted="addToken"></TokenAddress>
-    <ul>
       <TokenDetails
         v-for="tokenAddress in erc20Tokens"
         :tokenAddress="tokenAddress"
         v-bind:key="tokenAddress"
       ></TokenDetails>
-    </ul>
   </div>
 </template>
 

@@ -1,99 +1,69 @@
 <template>
-  <div>
-    <div>
-      <label for="tokenAddress">Token Address</label>
-      <input v-model="tokenaddress" id="tokenAddress" type="text" placeholder="0x..." />
-    </div>
+  <md-app>
+    <md-app-toolbar class="md-title">Market Maker - Create Order</md-app-toolbar>
+    <md-app-content>
+      <md-field>
+        <label>Token Address</label>
+        <md-input v-model="tokenaddress" type="text" placeholder="0x..."></md-input>
+      </md-field>
 
-    <div>
-      <label for="makerPrice">Price</label>
-      <input v-model="makerPrice" id="makerPrice" type="text" value="100" />
-    </div>
+      <md-field>
+        <label>Price</label>
+        <md-input v-model="makerPrice" type="text" value="100" />
+      </md-field>
 
-    <div>
-      <label for="makerAmount">Amount</label>
-      <input v-model="makerAmount" id="makerAmount" type="text" value="1000" />
-    </div>
+      <md-field>
+        <label>Amount</label>
+        <md-input v-model="makerAmount" type="text" value="1000" />
+      </md-field>
 
-    <div>
-      <label for="orderType">Order Type</label>
-      <div>
-        <div>
-          <label>
-            <input type="radio" id="orderType-0" value="1" checked="checked" v-model="isSellOrder" />
-            Sell Order
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="radio" id="orderType-1" value="0" v-model="isSellOrder" />
-            Buy Order
-          </label>
-        </div>
-      </div>
-    </div>
+      <md-field>
+        <label for="ordertype">Order Type</label>
+        <md-select v-model="isSellOrder" name="ordertype" id="ordertype">
+          <md-option value="1">Sell Order</md-option>
+          <md-option value="0">Buy Order</md-option>
+        </md-select>
+      </md-field>
 
-    <div>
-      <label for="fillable">Order Fill option</label>
-      <div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              id="fillable-0"
-              value="1"
-              checked="checked"
-              v-model="isPartialFillable"
-            />
-            Allow partial order fill
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="radio" id="fillable-1" value="0" v-model="isPartialFillable" />
-            Require full order fill
-          </label>
-        </div>
-      </div>
-    </div>
+      <md-field>
+        <label for="filloption">Order Fill option</label>
+        <md-select v-model="isPartialFillable" name="filloption" id="filloption">
+          <md-option value="1">Allow partial order fill</md-option>
+          <md-option value="0">Require full order fill</md-option>
+        </md-select>
+      </md-field>
 
-    <!-- working here -->
-    <div>
-      <label for="lifetime">Order lifetime</label>
-      <div>
-        <div>
-          <label>
-            <input type="radio" id="lifetime-0" value="300" checked="checked" v-model="lifetime" />
-            5 min
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="radio" id="lifetime-1" value="1800" v-model="lifetime" />
-            30 min
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="radio" id="lifetime-2" value="604800" v-model="lifetime" />
-            1 week
-          </label>
-        </div>
-      </div>
-    </div>
+      <md-field>
+        <label for="lifetime">Order lifetime</label>
+        <md-select v-model="lifetime" name="lifetime" id="lifetime">
+          <md-option value="300">5 min</md-option>
+          <md-option value="1800">30 min</md-option>
+          <md-option value="604800">1 week</md-option>
+        </md-select>
+      </md-field>
 
-    <!-- Button -->
-    <div>
-      <label for="signBtn">Create data</label>
-      <div>
-        <!-- <button type="button" onclick="init()" class="btn btn-secondary">Init</button> -->
-        <!-- <button type="button" onclick="createOrder()" class="btn btn-success">Create</button> -->
-        <!-- <button type="button" onclick="signOrder()" class="btn btn-warning">Sign</button> -->
-        <button v-on:click="createOrder">Create Order</button>
-        <button v-on:click="signOrder">Sign Order</button>
-      </div>
-    </div>
-  </div>
+      <md-dialog :md-active.sync="showDialog">
+        <md-dialog-title>OTC Order Created</md-dialog-title>
+        <md-divider />
+        <div>
+          <md-content>
+            <code style="white-space: pre-line">{{ jsonOrder }}</code>
+          </md-content>
+        </div>
+        <md-divider />
+
+        <md-dialog-actions>
+          <md-button class="md-primary" @click="showDialog = false">Close</md-button>
+        </md-dialog-actions>
+      </md-dialog>
+
+      <!-- Button -->
+      <md-field>
+        <md-button class="md-raised" v-on:click="createOrder">Create Order</md-button>
+        <md-button class="md-raised md-accent" v-on:click="signOrder">Sign Order</md-button>
+      </md-field>
+    </md-app-content>
+  </md-app>
 </template>
 
 <script>
@@ -105,17 +75,19 @@ export default {
       tokenaddress: "0x32b042393AA19A5391ABDC96AA09D7bA2C9D8a5e",
       makerPrice: 100,
       makerAmount: 1000,
-      isSellOrder: 1,
-      isPartialFillable: 1,
-      lifetime: 604800
+      isSellOrder: "1",
+      isPartialFillable: "1",
+      lifetime: 604800,
+      showDialog: false,
+      jsonOrder: null
     };
   },
   methods: {
     async createOrder() {
       console.log("Create order clicked");
 
-      var ttl = Math.floor(Date.now() / 1000);
-      ttl = ttl + parseInt(this.lifetime, 10);
+      //  var ttl = Math.floor(Date.now() / 1000);
+      //  ttl = ttl + parseInt(this.lifetime, 10);
 
       var order = {
         token: this.tokenaddress,
@@ -130,15 +102,16 @@ export default {
       };
 
       order.hash = await blockchain.calcHash(order);
-      var jsonOrder = JSON.stringify(order, null, 2);
-      console.log("Order:", jsonOrder);
+      this.jsonOrder = JSON.stringify(order, null, 2);
+      console.log("Order:", this.jsonOrder);
       return order;
     },
     async signOrder() {
       var order = await this.createOrder();
       order.sig = await blockchain.signHash(order.hash);
-      var jsonOrder = JSON.stringify(order, null, 2);
-      console.log("Signed Order:", jsonOrder);
+      this.jsonOrder = JSON.stringify(order, null, 2);
+      console.log("Signed Order:", this.jsonOrder);
+      this.showDialog = true;
     }
   }
 };
