@@ -11,7 +11,7 @@ window.ethereum.enable().then(function (addresses) {
 var blockchain = {
 
     getDex3Addr() {
-        return "0x0Bf5420Cb7583fF76fc80523475914D8979F0Bb1";
+        return "0xaE858284DAa28eB1fF51a66e1F2329c289929AEf";
     },
 
     getWeb3() {
@@ -77,7 +77,7 @@ var blockchain = {
 
     async getDex3BaseToken() {
         var dex3 = await blockchain.getDex3Instance();
-        var baseTokenAddr = await dex3.methods._baseTokenAddress().call();
+        var baseTokenAddr = await dex3.methods.getBaseToken().call();
         return await blockchain.getPersonalTokenInfo(baseTokenAddr);
     },
 
