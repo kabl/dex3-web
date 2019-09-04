@@ -72,7 +72,7 @@ import blockchain from "../js/blockchainInterface";
 export default {
   data() {
     return {
-      tokenaddress: "0x32b042393AA19A5391ABDC96AA09D7bA2C9D8a5e",
+      tokenaddress: "0x201368dC6131E58Ba3fCe122187C669e6d21CD2F",
       makerPrice: 100,
       makerAmount: 1000,
       isSellOrder: "1",

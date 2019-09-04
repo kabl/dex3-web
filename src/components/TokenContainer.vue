@@ -25,6 +25,8 @@ export default {
   created: async function() {
     var token = await blockchain.getDex3BaseToken();
     this.addToken(token);
+    var t1 = await blockchain.getPersonalTokenInfo("0x201368dC6131E58Ba3fCe122187C669e6d21CD2F");
+    this.addToken(t1);
   },
   methods: {
     addToken(erc20Token) {

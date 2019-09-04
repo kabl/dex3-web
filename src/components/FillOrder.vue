@@ -4,7 +4,7 @@
     <md-app-content>
       <md-field>
         <label>Signed Maker Order</label>
-        <md-textarea v-model="tokenaddress" type="text"></md-textarea>
+        <md-textarea v-model="signedOrder" type="text"></md-textarea>
       </md-field>
 
       <md-field>

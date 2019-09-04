@@ -2,11 +2,13 @@
   <md-app>
     <md-app-toolbar class="md-title">Token Management</md-app-toolbar>
     <md-app-content>
-    <md-field>
-      <label>Token Address</label>
-      <md-input v-model="tokenaddress"></md-input>
-    </md-field>
-    <md-button class="md-raised" v-on:click="onSubmit">Submit</md-button>
+      <md-field>
+        <label>Token Address</label>
+        <md-input v-model="tokenaddress"></md-input>
+      </md-field>
+      <md-field>
+        <md-button class="md-raised md-primary" v-on:click="onSubmit">Submit</md-button>
+      </md-field>
     </md-app-content>
   </md-app>
 </template>
