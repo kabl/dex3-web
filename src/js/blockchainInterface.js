@@ -11,7 +11,7 @@ window.ethereum.enable().then(function (addresses) {
 var blockchain = {
 
     getDex3Addr() {
-        return "0xaE858284DAa28eB1fF51a66e1F2329c289929AEf";
+        return "0x321DF92d258aDA6Ed4592fb7d2cbc844c4b7B0A8";
     },
 
     getWeb3() {

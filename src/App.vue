@@ -12,10 +12,11 @@
   </head>
   <body>
     <div id="app">
-      <img alt="Vue logo" src="./assets/logo.png" />
-      <TokenContainer />
-      <CreateOrder />
-      <FillOrder />
+      <div class="md-layout md-gutter">
+        <div class="md-layout-item"><TokenContainer /></div>
+        <div class="md-layout-item"><CreateOrder /></div>
+        <div class="md-layout-item"><FillOrder /></div>
+      </div>
     </div>
   </body>
 </html>

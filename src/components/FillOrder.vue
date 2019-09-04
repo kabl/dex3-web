@@ -1,22 +1,22 @@
 <template>
-  <div>
-    <div>
-      <label for="signedOrder">Signed Maker Order</label>
-      <textarea v-model="signedOrder" id="signedOrder" type="text" />
-    </div>
+  <md-app>
+    <md-app-toolbar class="md-title">Market Taker - Fill Order</md-app-toolbar>
+    <md-app-content>
+      <md-field>
+        <label>Signed Maker Order</label>
+        <md-textarea v-model="tokenaddress" type="text"></md-textarea>
+      </md-field>
 
-    <div>
-      <label for="takerAmount">Taker Amount</label>
-      <input v-model="takerAmount" id="takerAmount" type="text" value="100" />
-    </div>
+      <md-field>
+        <label>Taker Amount</label>
+        <md-input v-model="takerAmount" type="text"></md-input>
+      </md-field>
 
-    <div>
-      <label>Create data</label>
-      <div>
-        <button v-on:click="fillOrder">Fill Order</button>
-      </div>
-    </div>
-  </div>
+      <md-field>
+        <md-button class="md-raised md-accent" v-on:click="fillOrder">Fill Order</md-button>
+      </md-field>
+    </md-app-content>
+  </md-app>
 </template>
 
 <script>
