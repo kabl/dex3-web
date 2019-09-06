@@ -12,6 +12,10 @@
   </head>
   <body>
     <div id="app">
+      <span class="md-display-3">DEX 3</span>
+      <p />
+      <span class="md-headline">Simple, Fast, Reliable</span>
+      <p />      
       <div class="md-layout md-gutter">
         <div class="md-layout-item"><TokenContainer /></div>
         <div class="md-layout-item"><CreateOrder /></div>
@@ -47,7 +51,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: rgba(255,255,255,0.7);
   margin-top: 60px;
 }
 </style>
