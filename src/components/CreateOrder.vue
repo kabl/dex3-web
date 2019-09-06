@@ -86,8 +86,8 @@ export default {
     async createOrder() {
       console.log("Create order clicked");
 
-      //  var ttl = Math.floor(Date.now() / 1000);
-      //  ttl = ttl + parseInt(this.lifetime, 10);
+        var ttl = Math.floor(Date.now() / 1000);
+        ttl = ttl + parseInt(this.lifetime, 10);
 
       var order = {
         token: this.tokenaddress,
@@ -95,8 +95,8 @@ export default {
         amount: parseInt(this.makerAmount, 10),
         isSellOrder: this.isSellOrder,
         partialFillAllowed: this.isPartialFillable,
-        // ttl: ttl,
-        ttl: 2164596577,
+        ttl: ttl,
+       // ttl: 2164596577,
         hash: undefined,
         sig: undefined
       };

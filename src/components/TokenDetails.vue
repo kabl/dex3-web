@@ -40,11 +40,11 @@ export default {
         this.erc20Token.address,
         this.erc20Token.balance
       );
-      await refresh();
+      await this.refresh();
     },
     async dexDeny() {
       await blockchain.dexDeny(this.erc20Token.address);
-      await refresh();
+      await this.refresh();
     },
     async refresh() {
       this.erc20Token = await blockchain.getPersonalTokenInfo(
