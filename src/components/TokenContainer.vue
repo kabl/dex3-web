@@ -1,11 +1,16 @@
 <template>
   <div>
-    <TokenAddress @tokenaddress-submitted="addToken"></TokenAddress>
-      <TokenDetails
-        v-for="tokenAddress in erc20Tokens"
-        :tokenAddress="tokenAddress"
-        v-bind:key="tokenAddress"
-      ></TokenDetails>
+    <md-app>
+      <md-app-toolbar class="md-title">Token Management</md-app-toolbar>
+      <md-app-content>
+        <TokenAddress @tokenaddress-submitted="addToken"></TokenAddress>
+        <TokenDetails
+          v-for="tokenAddress in erc20Tokens"
+          :tokenAddress="tokenAddress"
+          v-bind:key="tokenAddress"
+        ></TokenDetails>
+      </md-app-content>
+    </md-app>
   </div>
 </template>
 
@@ -25,7 +30,9 @@ export default {
   created: async function() {
     var token = await blockchain.getDex3BaseToken();
     this.addToken(token);
-    var t1 = await blockchain.getPersonalTokenInfo("0x201368dC6131E58Ba3fCe122187C669e6d21CD2F");
+    var t1 = await blockchain.getPersonalTokenInfo(
+      "0x201368dC6131E58Ba3fCe122187C669e6d21CD2F"
+    );
     this.addToken(t1);
   },
   methods: {

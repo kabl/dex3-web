@@ -1,17 +1,42 @@
 <template>
   <md-card md-with-hover>
-      <md-card-header>
-        <div class="md-title">{{ erc20Token.name }} / {{ erc20Token.symbol }}</div>
-        <div class="md-subhead">{{ erc20Token.address }}</div>
-      </md-card-header>
-      <md-card-content>
-        <div>Balance: {{ erc20Token.balance }}</div>
-        <div>DEX Allowance: {{ erc20Token.dexAllowance }}</div>
-      </md-card-content>
-      <md-card-actions>
-        <md-button class="md-raised md-accent" v-on:click="dexAllow">DEX Allow</md-button>
-        <md-button class="md-raised md-accent" v-on:click="dexDeny">DEX Deny</md-button>
-      </md-card-actions>
+    <md-card-header>
+      <div class="md-title">
+        <div>
+          {{ erc20Token.name }} / {{ erc20Token.symbol }}
+          <md-menu md-size="small">
+            <md-button md-menu-trigger class="md-icon-button md-primary">
+              <md-icon>menu</md-icon>
+            </md-button>
+            <md-menu-content>
+              <md-menu-item>
+                <md-button
+                  md-menu-trigger
+                  class="md-raised md-accent"
+                  v-on:click="dexAllow"
+                >DEX Allow</md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button md-menu-trigger class="md-raised md-accent" v-on:click="dexDeny">DEX Deny</md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </div>
+      </div>
+      <div class="md-subhead">{{ erc20Token.address }}</div>
+    </md-card-header>
+    <md-card-content>
+      <md-table>
+        <md-table-row>
+          <md-table-cell>Balance</md-table-cell>
+          <md-table-cell>{{ erc20Token.balance }}</md-table-cell>
+        </md-table-row>
+        <md-table-row>
+          <md-table-cell>DEX Allowance</md-table-cell>
+          <md-table-cell>{{ erc20Token.dexAllowance }}</md-table-cell>
+        </md-table-row>
+      </md-table>
+    </md-card-content>
   </md-card>
 </template>
 
@@ -54,3 +79,11 @@ export default {
   }
 };
 </script>
+<style>
+.center {
+  margin: auto;
+  width: 60%;
+  border: 3px solid #73ad21;
+  padding: 10px;
+}
+</style>
