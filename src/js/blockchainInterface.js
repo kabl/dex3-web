@@ -102,9 +102,7 @@ var blockchain = {
         return sig;
     },
 
-    async fillOrder(signedOrder, takerAmount) {
-        var order = JSON.parse(signedOrder);
-    
+    async fillOrder(order, takerAmount) {
         var dex3 = await blockchain.getDex3Instance();
         var result = await dex3.methods.exchange(
             order.token,

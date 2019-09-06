@@ -79,11 +79,3 @@ export default {
   }
 };
 </script>
-<style>
-.center {
-  margin: auto;
-  width: 60%;
-  border: 3px solid #73ad21;
-  padding: 10px;
-}
-</style>

@@ -1,0 +1,10 @@
+{
+"token": "0x201368dC6131E58Ba3fCe122187C669e6d21CD2F",
+"price": 100,
+"amount": 1000,
+"isSellOrder": "1",
+"partialFillAllowed": "1",
+"ttl": 1568411728,
+"hash": "0xb852d34424c6ff05fc2781277c862429bc1cf481dab1bb876106012732635540",
+"sig": "0x97f8868ae8afba4a845fc57641e8baef52070e83fa7f7ce3cf28260946db733b01bfa1bd98ec798ee9b862d7f82302ede63aa65c961b6051f275a424f7ba8bc11c"
+}

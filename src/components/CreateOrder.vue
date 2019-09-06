@@ -8,6 +8,14 @@
       </md-field>
 
       <md-field>
+        <label for="ordertype">Order Type</label>
+        <md-select v-model="isSellOrder" name="ordertype" id="ordertype">
+          <md-option value="1">Sell Order</md-option>
+          <md-option value="0">Buy Order</md-option>
+        </md-select>
+      </md-field>
+
+      <md-field>
         <label>Price</label>
         <md-input v-model="makerPrice" type="text" value="100" />
       </md-field>
@@ -15,14 +23,6 @@
       <md-field>
         <label>Amount</label>
         <md-input v-model="makerAmount" type="text" value="1000" />
-      </md-field>
-
-      <md-field>
-        <label for="ordertype">Order Type</label>
-        <md-select v-model="isSellOrder" name="ordertype" id="ordertype">
-          <md-option value="1">Sell Order</md-option>
-          <md-option value="0">Buy Order</md-option>
-        </md-select>
       </md-field>
 
       <md-field>
