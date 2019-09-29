@@ -25,6 +25,7 @@
         <md-table-cell>Lifetime</md-table-cell>
         <md-table-cell>{{ order.ttl }}</md-table-cell>
       </md-table-row>
+
       <!-- <md-table-row>
         <md-table-cell>Hash</md-table-cell>
         <md-table-cell>{{ order.hash }}</md-table-cell>
@@ -34,6 +35,7 @@
         <md-table-cell>{{ order.sig }}</md-table-cell>
       </md-table-row>-->
     </md-table>
+    <md-field>{{ description }}</md-field>
   </div>
 </template>
 
@@ -59,6 +61,10 @@ export default {
       if (this.order.partialFillAllowed == 0) return "Require full order fill";
       if (this.order.partialFillAllowed == 1) return "Allow partial order fill";
       return "Error FillOption";
+    },
+    description: function() {
+      var buySell = this.order.isSellOrder == 0 ? "buy" : "sell";
+      return "Market maker offers to " + buySell + " " + this.order.amount + " " + this.erc20Token.symbol + " for " + this.order.price + " WETH."
     }
   }
 };

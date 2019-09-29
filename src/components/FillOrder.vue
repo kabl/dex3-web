@@ -11,9 +11,9 @@
         <md-button class="md-raised md-primary" v-on:click="validateOrder">Validate Order</md-button>
       </md-field>
 
-      <OrderDetails v-if="erc20Token" :order="order" :erc20Token="erc20Token" v-bind:key="order.hash"></OrderDetails>
+      <OrderDetails v-if="erc20Token" :order="order" :erc20Token="erc20Token"></OrderDetails>
 
-      <md-field>
+      <md-field v-if="erc20Token">
         <label>Taker Amount</label>
         <md-input v-model="takerAmount" type="number" min="1"></md-input>
       </md-field>
@@ -35,7 +35,7 @@
         </md-dialog-actions>
       </md-dialog>
 
-      <md-field>
+      <md-field v-if="erc20Token">
         <md-button
           class="md-raised md-primary"
           :disabled="order == null"
