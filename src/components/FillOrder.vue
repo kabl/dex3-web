@@ -35,7 +35,7 @@
         </md-dialog-actions>
       </md-dialog>
 
-      <md-field v-if="erc20Token">
+      <md-field>
         <md-button
           class="md-raised md-primary"
           :disabled="order == null"

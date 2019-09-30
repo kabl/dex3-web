@@ -73,8 +73,8 @@ export default {
   data() {
     return {
       tokenaddress: "0x201368dC6131E58Ba3fCe122187C669e6d21CD2F",
-      makerPrice: 100,
-      makerAmount: 1000,
+      makerPrice: "100",
+      makerAmount: "1000",
       isSellOrder: "1",
       isPartialFillable: "1",
       lifetime: 604800,
@@ -91,8 +91,8 @@ export default {
 
       var order = {
         token: this.tokenaddress,
-        price: parseInt(this.makerPrice, 10),
-        amount: parseInt(this.makerAmount, 10),
+        price: this.makerPrice,
+        amount: this.makerAmount,
         isSellOrder: this.isSellOrder,
         partialFillAllowed: this.isPartialFillable,
         ttl: ttl,
