@@ -3,6 +3,7 @@
     <md-app>
       <md-app-toolbar class="md-title">Token Management</md-app-toolbar>
       <md-app-content>
+        <div>Add Token smart contract address to list it.</div>
         <TokenAddress @tokenaddress-submitted="addToken"></TokenAddress>
         <TokenDetails
           v-for="tokenAddress in erc20Tokens"

@@ -15,11 +15,30 @@
       <span class="md-display-3">DEX 3</span>
       <p />
       <span class="md-headline">Simple, Fast, Reliable</span>
-      <p />      
-      <div class="md-layout md-gutter">
-        <div class="md-layout-item"><TokenContainer /></div>
-        <div class="md-layout-item"><CreateOrder /></div>
-        <div class="md-layout-item"><FillOrder /></div>
+      <p />
+      <div class="md-layout md-gutter" :class="`md-alignment-top-center`">
+        <div class="md-layout-item md-size-40">
+          <TokenContainer />
+        </div>
+        <div class="md-layout-item md-size-40">
+          <md-app>
+            <md-app-toolbar class="md-title">Create or Fill Order</md-app-toolbar>
+
+            <md-app-content>
+              <div>
+                <md-radio v-model="isMarketMaker" :value="true">Create a new Order</md-radio>
+                <md-radio v-model="isMarketMaker" :value="false">Fill an existing Order</md-radio>
+              </div>
+            </md-app-content>
+          </md-app>
+
+          <div class="md-layout-item" v-if="isMarketMaker">
+            <CreateOrder />
+          </div>
+          <div class="md-layout-item" v-else>
+            <FillOrder />
+          </div>
+        </div>
       </div>
     </div>
   </body>
@@ -37,6 +56,11 @@ Vue.use(VueMaterial);
 
 export default {
   name: "app",
+  data() {
+    return {
+      isMarketMaker: true
+    };
+  },
   components: {
     TokenContainer,
     CreateOrder,
@@ -51,7 +75,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.7);
   margin-top: 60px;
 }
 </style>

@@ -2,23 +2,93 @@
   <md-app>
     <md-app-toolbar class="md-title">Market Maker - Create Order</md-app-toolbar>
     <md-app-content>
-      <md-field>
+      <md-table>
+        <md-table-row>
+          <md-table-cell>
+            <div style="text-align: left">Token Address</div>
+          </md-table-cell>
+          <md-table-cell>
+            <md-field>
+              <md-input v-model="tokenaddress" type="text" placeholder="0x..."></md-input>
+            </md-field>
+          </md-table-cell>
+        </md-table-row>
+
+        <md-table-row>
+          <md-table-cell>
+            <div style="text-align: left">Order Type</div>
+          </md-table-cell>
+          <md-table-cell>
+            <div style="text-align: left">
+              <md-radio v-model="isSellOrder" value="1">Sell Order</md-radio>
+              <br />
+              <md-radio v-model="isSellOrder" value="0">Buy Order</md-radio>
+            </div>
+          </md-table-cell>
+        </md-table-row>
+
+        <md-table-row>
+          <md-table-cell>
+            <div style="text-align: left">Amount to trade</div>
+          </md-table-cell>
+          <md-table-cell>
+            <md-field>
+              <md-input v-model="makerAmount" type="text" value="1000" />
+            </md-field>
+          </md-table-cell>
+        </md-table-row>
+
+        <md-table-row>
+          <md-table-cell>
+            <div style="text-align: left">Total price</div>
+          </md-table-cell>
+          <md-table-cell>
+            <md-field>
+              <md-input v-model="makerPrice" type="text" value="100" />
+            </md-field>
+          </md-table-cell>
+        </md-table-row>
+
+        <md-table-row>
+          <md-table-cell>
+            <div style="text-align: left">Order Fill option</div>
+          </md-table-cell>
+          <md-table-cell>
+            <div style="text-align: left">
+              <md-radio v-model="isPartialFillable" value="1">Allow partial order fill</md-radio>
+              <br />
+              <md-radio v-model="isPartialFillable" value="0">Require full order fill</md-radio>
+            </div>
+          </md-table-cell>
+        </md-table-row>
+
+        <md-table-row>
+          <md-table-cell>
+            <div style="text-align: left">Order lifetime</div>
+          </md-table-cell>
+          <md-table-cell>
+            <div style="text-align: left">
+              <md-radio v-model="lifetime" value="300">5 min</md-radio>
+              <md-radio v-model="lifetime" value="1800">30 min</md-radio>
+              <md-radio v-model="lifetime" value="604800">1 week</md-radio>
+            </div>
+          </md-table-cell>
+        </md-table-row>
+      </md-table>
+      <!-- <md-field>
         <label>Token Address</label>
         <md-input v-model="tokenaddress" type="text" placeholder="0x..."></md-input>
       </md-field>
 
-      <md-field>
-        <label for="ordertype">Order Type</label>
-        <md-select v-model="isSellOrder" name="ordertype" id="ordertype">
-          <md-option value="1">Sell Order</md-option>
-          <md-option value="0">Buy Order</md-option>
-        </md-select>
-      </md-field>
-
-      <md-field>
-        <label>Price</label>
-        <md-input v-model="makerPrice" type="text" value="100" />
-      </md-field>
+      <div style="text-align: left">Order Type</div>
+      <md-list>
+        <md-list-item>
+          <md-radio v-model="isSellOrder" value="1">Sell Order</md-radio>
+        </md-list-item>
+        <md-list-item>
+          <md-radio v-model="isSellOrder" value="0">Buy Order</md-radio>
+        </md-list-item>
+      </md-list>
 
       <md-field>
         <label>Amount</label>
@@ -26,21 +96,26 @@
       </md-field>
 
       <md-field>
-        <label for="filloption">Order Fill option</label>
-        <md-select v-model="isPartialFillable" name="filloption" id="filloption">
-          <md-option value="1">Allow partial order fill</md-option>
-          <md-option value="0">Require full order fill</md-option>
-        </md-select>
+        <label>Price</label>
+        <md-input v-model="makerPrice" type="text" value="100" />
       </md-field>
 
-      <md-field>
-        <label for="lifetime">Order lifetime</label>
-        <md-select v-model="lifetime" name="lifetime" id="lifetime">
-          <md-option value="300">5 min</md-option>
-          <md-option value="1800">30 min</md-option>
-          <md-option value="604800">1 week</md-option>
-        </md-select>
-      </md-field>
+      <md-list>
+        <md-list-item>Order Fill option</md-list-item>
+        <md-list-item>
+          <md-radio v-model="isPartialFillable" value="1">Allow partial order fill</md-radio>
+        </md-list-item>
+        <md-list-item>
+          <md-radio v-model="isPartialFillable" value="0">Require full order fill</md-radio>
+        </md-list-item>
+      </md-list>
+
+      <div>
+        <div>Order lifetime</div>
+        <md-radio v-model="lifetime" value="300">5 min</md-radio>
+        <md-radio v-model="lifetime" value="1800">30 min</md-radio>
+        <md-radio v-model="lifetime" value="604800">1 week</md-radio>
+      </div> -->
 
       <md-dialog :md-active.sync="showDialog">
         <md-dialog-title>OTC Order Created</md-dialog-title>
@@ -77,7 +152,7 @@ export default {
       makerAmount: "1000",
       isSellOrder: "1",
       isPartialFillable: "1",
-      lifetime: 604800,
+      lifetime: "604800",
       showDialog: false,
       jsonOrder: null
     };
@@ -86,8 +161,8 @@ export default {
     async createOrder() {
       console.log("Create order clicked");
 
-        var ttl = Math.floor(Date.now() / 1000);
-        ttl = ttl + parseInt(this.lifetime, 10);
+      var ttl = Math.floor(Date.now() / 1000);
+      ttl = ttl + parseInt(this.lifetime, 10);
 
       var order = {
         token: this.tokenaddress,
@@ -96,7 +171,7 @@ export default {
         isSellOrder: this.isSellOrder,
         partialFillAllowed: this.isPartialFillable,
         ttl: ttl,
-       // ttl: 2164596577,
+        // ttl: 2164596577,
         hash: undefined,
         sig: undefined
       };
