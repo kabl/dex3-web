@@ -1,6 +1,7 @@
 import Web3 from 'web3';
 import erc20abi from '../abi/erc20abi';
 import dex3Abi from '../abi/dex3';
+const BN = Web3.utils.BN;
 
 var web3 = new Web3(window.ethereum || "ws://localhost:8545");
 
@@ -37,18 +38,25 @@ var blockchain = {
         var coinbase = await web3.eth.getCoinbase();
         var erc20Instance = await blockchain.getERC20Instance(tokenaddress);
         var balance = await erc20Instance.methods.balanceOf(coinbase).call();
+        var decimals = await erc20Instance.methods.decimals().call();
         var name = await erc20Instance.methods.name().call();
         var symbol = await erc20Instance.methods.symbol().call();
         var dexAllowance = await erc20Instance.methods
             .allowance(coinbase, blockchain.getDex3Addr())
             .call();
 
+        const balanceHumanReadable = this.toHumanReadableBalance(balance, decimals);
+        const dexAllowanceHumanReadable = this.toHumanReadableBalance(dexAllowance, decimals);
+
         var erc20 = {
             address: tokenaddress,
             name: name,
             symbol: symbol,
             balance: balance,
-            dexAllowance: dexAllowance
+            dexAllowance: dexAllowance,
+            decimals: decimals,
+            balanceHumanReadable: balanceHumanReadable,
+            dexAllowanceHumanReadable: dexAllowanceHumanReadable
         };
 
         return erc20;
@@ -116,6 +124,23 @@ var blockchain = {
         ).send();
     
         console.dir(result);
+    },
+
+    toHumanReadableBalance(balance, decimals) {
+        const balanceWeiBN = new BN(balance);
+        const decimalsBN = new BN(decimals);
+        const divisor = new BN(10).pow(decimalsBN);
+        const beforeDecimal = balanceWeiBN.div(divisor);
+        const afterDecimal  = balanceWeiBN.mod(divisor);
+        var sAfter = afterDecimal.toString();
+        const sBefore = beforeDecimal.toString();
+        if(sAfter == "0") {
+            return sBefore;
+        } else {
+            sAfter.padEnd(4, '0')
+            sAfter = sAfter.slice(0, 4);
+            return sBefore + "." + sAfter;
+        }
     }
 }
 

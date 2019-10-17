@@ -1,12 +1,20 @@
 <template>
   <div>
-    <md-field>
-      <label>Token Address</label>
-      <md-input v-model="tokenaddress"></md-input>
-    </md-field>
-    <md-field>
-      <md-button class="md-raised md-primary" v-on:click="onSubmit">Submit</md-button>
-    </md-field>
+    <md-table>
+      <md-table-row>
+        <md-table-cell>
+          <div style="text-align: left">Token Address</div>
+        </md-table-cell>
+        <md-table-cell style="width:100%;">
+          <md-field>
+            <md-input v-model="tokenaddress" placeholder="0x..."></md-input>
+          </md-field>
+        </md-table-cell>
+        <md-table-cell>
+          <md-button class="md-fab md-mini md-primary" v-on:click="onSubmit" :disabled="tokenaddress == null"><md-icon>add</md-icon></md-button>  
+        </md-table-cell>
+      </md-table-row>
+    </md-table>
   </div>
 </template>
 <script>
