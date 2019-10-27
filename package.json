@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "ganache": "ganache-cli -m \"wide section club want soap excite path rain lumber frog detect hungry\""
+    "ganache": "ganache-cli -m \"wide section club want soap excite path rain lumber frog detect hungry\"",
+    "preview": "serve -s dist"
   },
   "dependencies": {
     "core-js": "^2.6.5",
