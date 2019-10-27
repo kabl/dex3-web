@@ -22,16 +22,17 @@
         <md-dialog-title>OTC Order Created</md-dialog-title>
         <md-divider />
         <div>
-          <md-content>You are about to {{orderType}} {{takerAmount}} XYZ Token for X WETH</md-content>
+          <md-content>
+            <span
+              class="md-display-1"
+            >You are about to {{orderActionTaker}} {{takerAmount}} {{erc20Symbol}} Token for X WETH</span>
+          </md-content>
         </div>
         <md-divider />
 
         <md-dialog-actions>
           <md-button class="md-raised md-primary" @click="showDialog = false">Abort</md-button>
-          <md-button
-            class="md-raised md-accent"
-            v-on:click="fillOrder"
-          >Submit Fill Order</md-button>
+          <md-button class="md-raised md-accent" v-on:click="fillOrder">Submit Fill Order</md-button>
         </md-dialog-actions>
       </md-dialog>
 
@@ -64,11 +65,15 @@ export default {
     };
   },
   computed: {
-    orderType: function() {
+    orderActionTaker: function() {
       if (this.order === null) return "";
-      if (this.order.isSellOrder == "0") return "Buy";
-      if (this.order.isSellOrder == "1") return "Sell";
+      if (this.order.isSellOrder == "0") return "Sell";
+      if (this.order.isSellOrder == "1") return "Buy";
       return "Error OrderType";
+    },
+    erc20Symbol: function() {
+      if (this.erc20Token == null) return "";
+      else return this.erc20Token.symbol;
     }
   },
   methods: {
@@ -79,9 +84,13 @@ export default {
     },
     async fillOrder() {
       console.log("Fill Order clicked");
-      await blockchain.fillOrder(this.order, this.takerAmount);
+      const realTakerAmount = blockchain.toContractNumber(
+        this.takerAmount,
+        this.erc20Token.decimals
+      );
+      await blockchain.fillOrder(this.order, realTakerAmount);
       this.showDialog = false;
-      this.order = null;
+      // this.order = null;
     }
   }
 };

@@ -1,7 +1,8 @@
 import Web3 from 'web3';
+// import ethers from 'ethers'
+import { ethers } from 'ethers';
 import erc20abi from '../abi/erc20abi';
 import dex3Abi from '../abi/dex3';
-const BN = Web3.utils.BN;
 
 var web3 = new Web3(window.ethereum || "ws://localhost:8545");
 
@@ -45,8 +46,8 @@ var blockchain = {
             .allowance(coinbase, blockchain.getDex3Addr())
             .call();
 
-        const balanceHumanReadable = this.toHumanReadableBalance(balance, decimals);
-        const dexAllowanceHumanReadable = this.toHumanReadableBalance(dexAllowance, decimals);
+        const balanceHumanReadable = this.toHumanNumber(balance, decimals);
+        const dexAllowanceHumanReadable = this.toHumanNumber(dexAllowance, decimals);
 
         var erc20 = {
             address: tokenaddress,
@@ -112,6 +113,8 @@ var blockchain = {
 
     async fillOrder(order, takerAmount) {
         var dex3 = await blockchain.getDex3Instance();
+        console.log("Fill Order: ", order);
+        console.log("Taker amount:", takerAmount)
         var result = await dex3.methods.exchange(
             order.token,
             order.amount,
@@ -122,27 +125,18 @@ var blockchain = {
             order.sig,
             takerAmount
         ).send();
-    
+
         console.dir(result);
     },
 
-    toHumanReadableBalance(balance, decimals) {
-        const balanceWeiBN = new BN(balance);
-        const decimalsBN = new BN(decimals);
-        const divisor = new BN(10).pow(decimalsBN);
-        const beforeDecimal = balanceWeiBN.div(divisor);
-        const afterDecimal  = balanceWeiBN.mod(divisor);
-        var sAfter = afterDecimal.toString();
-        const sBefore = beforeDecimal.toString();
-        if(sAfter == "0") {
-            return sBefore;
-        } else {
-            sAfter.padEnd(4, '0')
-            sAfter = sAfter.slice(0, 4);
-            return sBefore + "." + sAfter;
-        }
+    toContractNumber(humanBalance, decimals) {
+        const result = ethers.utils.parseUnits(humanBalance.toString(), parseInt(decimals));
+        return result.toString(10);
+    },
+
+    toHumanNumber(balance, decimals) {
+        return ethers.utils.formatUnits(balance, parseInt(decimals));
     }
 }
-
 
 export default blockchain

@@ -1,4 +1,4 @@
-erc20abi = [
+var erc20abi = [
   {
     "constant": true,
     "inputs": [],

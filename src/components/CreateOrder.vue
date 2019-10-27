@@ -40,7 +40,7 @@
 
         <md-table-row>
           <md-table-cell>
-            <div style="text-align: left">Total price</div>
+            <div style="text-align: left">Total price (WETH)</div>
           </md-table-cell>
           <md-table-cell>
             <md-field>
@@ -75,47 +75,6 @@
           </md-table-cell>
         </md-table-row>
       </md-table>
-      <!-- <md-field>
-        <label>Token Address</label>
-        <md-input v-model="tokenaddress" type="text" placeholder="0x..."></md-input>
-      </md-field>
-
-      <div style="text-align: left">Order Type</div>
-      <md-list>
-        <md-list-item>
-          <md-radio v-model="isSellOrder" value="1">Sell Order</md-radio>
-        </md-list-item>
-        <md-list-item>
-          <md-radio v-model="isSellOrder" value="0">Buy Order</md-radio>
-        </md-list-item>
-      </md-list>
-
-      <md-field>
-        <label>Amount</label>
-        <md-input v-model="makerAmount" type="text" value="1000" />
-      </md-field>
-
-      <md-field>
-        <label>Price</label>
-        <md-input v-model="makerPrice" type="text" value="100" />
-      </md-field>
-
-      <md-list>
-        <md-list-item>Order Fill option</md-list-item>
-        <md-list-item>
-          <md-radio v-model="isPartialFillable" value="1">Allow partial order fill</md-radio>
-        </md-list-item>
-        <md-list-item>
-          <md-radio v-model="isPartialFillable" value="0">Require full order fill</md-radio>
-        </md-list-item>
-      </md-list>
-
-      <div>
-        <div>Order lifetime</div>
-        <md-radio v-model="lifetime" value="300">5 min</md-radio>
-        <md-radio v-model="lifetime" value="1800">30 min</md-radio>
-        <md-radio v-model="lifetime" value="604800">1 week</md-radio>
-      </div> -->
 
       <md-dialog :md-active.sync="showDialog">
         <md-dialog-title>OTC Order Created</md-dialog-title>
@@ -163,15 +122,20 @@ export default {
 
       var ttl = Math.floor(Date.now() / 1000);
       ttl = ttl + parseInt(this.lifetime, 10);
+      var tokenToTrade = await blockchain.getPersonalTokenInfo(this.tokenaddress);
+      var amount = blockchain.toContractNumber(this.makerAmount, tokenToTrade.decimals);
+      console.log("amount: ", amount);
+      var price = blockchain.toContractNumber(this.makerPrice, 18);
+      console.log("price: ", price);
 
       var order = {
         token: this.tokenaddress,
-        price: this.makerPrice,
-        amount: this.makerAmount,
-        isSellOrder: this.isSellOrder,
-        partialFillAllowed: this.isPartialFillable,
+        price: price,
+        amount: amount,
+        isSellOrder: parseInt(this.isSellOrder),
+        partialFillAllowed: parseInt(this.isPartialFillable),
         ttl: ttl,
-        // ttl: 2164596577,
+        //ttl: 2164596577,
         hash: undefined,
         sig: undefined
       };

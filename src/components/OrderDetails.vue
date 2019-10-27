@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :v-if="order != null">
     <md-table>
       <md-table-row>
         <md-table-cell>Token to Trade</md-table-cell>
@@ -11,11 +11,11 @@
       </md-table-row>
       <md-table-row>
         <md-table-cell>Price</md-table-cell>
-        <md-table-cell>{{ order.price }}</md-table-cell>
+        <md-table-cell>{{ humanPrice }}</md-table-cell>
       </md-table-row>
       <md-table-row>
         <md-table-cell>Amount</md-table-cell>
-        <md-table-cell>{{ order.amount }}</md-table-cell>
+        <md-table-cell>{{ humanAmount }}</md-table-cell>
       </md-table-row>
       <md-table-row>
         <md-table-cell>Fill Option</md-table-cell>
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import blockchain from '../js/blockchainInterface';
 export default {
   props: {
     order: {
@@ -62,9 +63,15 @@ export default {
       if (this.order.partialFillAllowed == 1) return "Allow partial order fill";
       return "Error FillOption";
     },
+    humanAmount: function() {
+      return blockchain.toHumanNumber(this.order.amount, this.erc20Token.decimals);
+    },
+    humanPrice: function() {
+      return blockchain.toHumanNumber(this.order.price, 18);
+    },
     description: function() {
       var buySell = this.order.isSellOrder == 0 ? "buy" : "sell";
-      return "Market maker offers to " + buySell + " " + this.order.amount + " " + this.erc20Token.symbol + " for " + this.order.price + " WETH."
+      return "Market maker offers to " + buySell + " " + this.humanAmount + " " + this.erc20Token.symbol + " for " + this.humanPrice + " WETH."
     }
   }
 };

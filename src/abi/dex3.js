@@ -1,4 +1,4 @@
-dex3 = [
+var dex3 = [
     {
         "constant": true,
         "inputs": [
