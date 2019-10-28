@@ -25,7 +25,7 @@
           <md-content>
             <span
               class="md-display-1"
-            >You are about to {{orderActionTaker}} {{takerAmount}} {{erc20Symbol}} Token for X WETH</span>
+            >You are about to {{orderActionTaker}} {{takerAmount}} {{erc20Symbol}} Token for {{priceToPay}} WETH</span>
           </md-content>
         </div>
         <md-divider />
@@ -50,6 +50,7 @@
 <script>
 import blockchain from "../js/blockchainInterface";
 import OrderDetails from "./OrderDetails.vue";
+import { BigNumber } from 'ethers/utils';
 
 export default {
   components: {
@@ -67,13 +68,20 @@ export default {
   computed: {
     orderActionTaker: function() {
       if (this.order === null) return "";
-      if (this.order.isSellOrder == "0") return "Sell";
-      if (this.order.isSellOrder == "1") return "Buy";
+      if (this.order.isSellOrder == 0) return "Sell"; //TODO check for bug. maybe it's int not string
+      if (this.order.isSellOrder == 1) return "Buy";
       return "Error OrderType";
     },
     erc20Symbol: function() {
       if (this.erc20Token == null) return "";
       else return this.erc20Token.symbol;
+    },
+    priceToPay: function() {
+      if (this.order === null) return -1;
+      const price = new web3.BigNumber(this.order.price);
+      const amount = new web3.BigNumber(this.order.amount);
+      const takerAmount = new web3.BigNumber(this.takerAmount);
+      return price.mul(takerAmount).div(amount);
     }
   },
   methods: {
