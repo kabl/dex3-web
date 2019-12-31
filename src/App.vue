@@ -2,13 +2,6 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport" />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons"
-    />
-    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/vue-material.min.css" />
-    <link rel="stylesheet" href="https://unpkg.com/vue-material/dist/theme/default-dark.css" />
   </head>
   <body>
     <div id="app">
@@ -47,12 +40,9 @@
 
 <script>
 import Vue from "vue";
-import VueMaterial from "vue-material";
-import "vue-material/dist/vue-material.min.css";
 import TokenContainer from "./components/TokenContainer.vue";
 import CreateOrder from "./components/CreateOrder.vue";
 import FillOrder from "./components/FillOrder.vue";
-Vue.use(VueMaterial);
 
 export default {
   name: "app",
