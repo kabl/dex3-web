@@ -1,103 +1,95 @@
 <template>
-  <md-app>
-    <md-app-toolbar class="md-title">Market Maker - Create Order</md-app-toolbar>
-    <md-app-content>
-      <md-table>
-        <md-table-row>
-          <md-table-cell>
+  <div>
+    <div class="v-title">Market Maker - Create Order</div>
+      <v-simple-table dense>
+        <tbody>
+        <tr>
+          <td>
             <div style="text-align: left">Token Address</div>
-          </md-table-cell>
-          <md-table-cell>
-            <md-field>
-              <md-input v-model="tokenaddress" type="text" placeholder="0x..."></md-input>
-            </md-field>
-          </md-table-cell>
-        </md-table-row>
+          </td>
+          <td>
+              <v-input v-model="tokenaddress" type="text" placeholder="0x..."></v-input>
+          </td>
+        </tr>
 
-        <md-table-row>
-          <md-table-cell>
+        <tr>
+          <td>
             <div style="text-align: left">Order Type</div>
-          </md-table-cell>
-          <md-table-cell>
+          </td>
+          <td>
             <div style="text-align: left">
-              <md-radio v-model="isSellOrder" value="1">Sell Order</md-radio>
+              <v-radio v-model="isSellOrder" value="1">Sell Order</v-radio>
               <br />
-              <md-radio v-model="isSellOrder" value="0">Buy Order</md-radio>
+              <v-radio v-model="isSellOrder" value="0">Buy Order</v-radio>
             </div>
-          </md-table-cell>
-        </md-table-row>
+          </td>
+        </tr>
 
-        <md-table-row>
-          <md-table-cell>
+        <tr>
+          <td>
             <div style="text-align: left">Amount to trade</div>
-          </md-table-cell>
-          <md-table-cell>
-            <md-field>
-              <md-input v-model="makerAmount" type="text" value="1000" />
-            </md-field>
-          </md-table-cell>
-        </md-table-row>
+          </td>
+          <td>
+              <v-input v-model="makerAmount" type="text" value="1000" />
+          </td>
+        </tr>
 
-        <md-table-row>
-          <md-table-cell>
+        <tr>
+          <td>
             <div style="text-align: left">Total price (WETH)</div>
-          </md-table-cell>
-          <md-table-cell>
-            <md-field>
-              <md-input v-model="makerPrice" type="text" value="100" />
-            </md-field>
-          </md-table-cell>
-        </md-table-row>
+          </td>
+          <td>
+              <v-input v-model="makerPrice" type="text" value="100" />
+          </td>
+        </tr>
 
-        <md-table-row>
-          <md-table-cell>
+        <tr>
+          <td>
             <div style="text-align: left">Order Fill option</div>
-          </md-table-cell>
-          <md-table-cell>
+          </td>
+          <td>
             <div style="text-align: left">
-              <md-radio v-model="isPartialFillable" value="1">Allow partial order fill</md-radio>
+              <v-radio v-model="isPartialFillable" value="1">Allow partial order fill</v-radio>
               <br />
-              <md-radio v-model="isPartialFillable" value="0">Require full order fill</md-radio>
+              <v-radio v-model="isPartialFillable" value="0">Require full order fill</v-radio>
             </div>
-          </md-table-cell>
-        </md-table-row>
+          </td>
+        </tr>
 
-        <md-table-row>
-          <md-table-cell>
+        <tr>
+          <td>
             <div style="text-align: left">Order lifetime</div>
-          </md-table-cell>
-          <md-table-cell>
+          </td>
+          <td>
             <div style="text-align: left">
-              <md-radio v-model="lifetime" value="300">5 min</md-radio>
-              <md-radio v-model="lifetime" value="1800">30 min</md-radio>
-              <md-radio v-model="lifetime" value="604800">1 week</md-radio>
+              <v-radio v-model="lifetime" value="300">5 min</v-radio>
+              <v-radio v-model="lifetime" value="1800">30 min</v-radio>
+              <v-radio v-model="lifetime" value="604800">1 week</v-radio>
             </div>
-          </md-table-cell>
-        </md-table-row>
-      </md-table>
+          </td>
+        </tr>
+        </tbody>
+      </v-simple-table>
 
-      <md-dialog :md-active.sync="showDialog">
-        <md-dialog-title>OTC Order Created</md-dialog-title>
-        <md-divider />
+      <v-dialog :v-active.sync="showDialog">
+        <v-dialog-title>OTC Order Created</v-dialog-title>
+        <v-divider />
         <div>
-          <md-content>
+          <v-content>
             <code style="white-space: pre-line">{{ jsonOrder }}</code>
-          </md-content>
+          </v-content>
         </div>
-        <md-divider />
+        <v-divider />
 
-        <md-dialog-actions>
-          <md-button class="md-primary" @click="showDialog = false">Close</md-button>
-        </md-dialog-actions>
-      </md-dialog>
+        <v-dialog-actions>
+          <v-btn class="v-primary" @click="showDialog = false">Close</v-btn>
+        </v-dialog-actions>
+      </v-dialog>
 
       <!-- Button -->
-      <md-field>
-        <md-button class="md-raised" v-on:click="createOrder">Create Order</md-button>
-        <md-button class="md-raised md-accent" v-on:click="signOrder">Sign Order</md-button>
-      </md-field>
-    </md-app-content>
-  </md-app>
+        <v-btn class="v-raised" v-on:click="createOrder">Create Order</v-btn>
+        <v-btn class="v-raised v-accent" v-on:click="signOrder">Sign Order</v-btn>
+    </div>
 </template>
 
 <script>

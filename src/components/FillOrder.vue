@@ -1,56 +1,50 @@
 <template>
-  <md-app>
-    <md-app-toolbar class="md-title">Market Taker - Fill Order</md-app-toolbar>
-    <md-app-content>
-      <md-field>
+  <div>
+    <div>Market Taker - Fill Order</div>
+    <div>
         <label>Signed Maker Order</label>
-        <md-textarea v-model="signedOrder" type="text"></md-textarea>
-      </md-field>
+        <v-textarea v-model="signedOrder" type="text"></v-textarea>
 
-      <md-field>
-        <md-button class="md-raised md-primary" v-on:click="validateOrder">Validate Order</md-button>
-      </md-field>
+        <v-btn class="v-raised v-primary" v-on:click="validateOrder">Validate Order</v-btn>
 
       <OrderDetails v-if="erc20Token" :order="order" :erc20Token="erc20Token"></OrderDetails>
 
-      <md-field v-if="erc20Token">
+      <div v-if="erc20Token">
         <label>Taker Amount</label>
-        <md-input v-model="takerAmount" type="number" min="1"></md-input>
-      </md-field>
+        <v-input v-model="takerAmount" type="number" min="1"></v-input>
+      </div>
 
-      <md-dialog :md-active.sync="showDialog">
-        <md-dialog-title>OTC Order Created</md-dialog-title>
-        <md-divider />
+      <v-dialog :v-active.sync="showDialog">
+        <v-dialog-title>OTC Order Created</v-dialog-title>
+        <v-divider />
         <div>
-          <md-content>
+          <v-content>
             <span
-              class="md-display-1"
+              class="v-display-1"
             >You are about to {{orderActionTaker}} {{takerAmount}} {{erc20Symbol}} Token for {{priceToPay}} WETH</span>
-          </md-content>
+          </v-content>
         </div>
-        <md-divider />
+        <v-divider />
 
-        <md-dialog-actions>
-          <md-button class="md-raised md-primary" @click="showDialog = false">Abort</md-button>
-          <md-button class="md-raised md-accent" v-on:click="fillOrder">Submit Fill Order</md-button>
-        </md-dialog-actions>
-      </md-dialog>
+        <v-dialog-actions>
+          <v-btn class="v-raised v-primary" @click="showDialog = false">Abort</v-btn>
+          <v-btn class="v-raised v-accent" v-on:click="fillOrder">Submit Fill Order</v-btn>
+        </v-dialog-actions>
+      </v-dialog>
 
-      <md-field>
-        <md-button
-          class="md-raised md-primary"
+        <v-btn
+          class="v-raised v-primary"
           :disabled="order == null"
           @click="showDialog = true"
-        >Prepare Fill Order</md-button>
-      </md-field>
-    </md-app-content>
-  </md-app>
+        >Prepare Fill Order</v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
 import blockchain from "../js/blockchainInterface";
 import OrderDetails from "./OrderDetails.vue";
-import { BigNumber } from 'ethers/utils';
+import Web3 from 'web3';
 
 export default {
   components: {
@@ -78,6 +72,7 @@ export default {
     },
     priceToPay: function() {
       if (this.order === null) return -1;
+      var web3 = new Web3(window.ethereum || "ws://localhost:8545");
       const price = new web3.BigNumber(this.order.price);
       const amount = new web3.BigNumber(this.order.amount);
       const takerAmount = new web3.BigNumber(this.takerAmount);

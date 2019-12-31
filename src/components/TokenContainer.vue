@@ -1,19 +1,17 @@
 <template>
   <div>
-    <md-app>
-      <md-app-toolbar class="md-title">Token Management</md-app-toolbar>
-      <md-app-content>
+      <div>Token Management</div>
+      <div>
         <div>Add the address from the ERC20 tokens you want to list here. The tokens which will be used 
           to settle the trades requires to be approved to the DEX3 smart contract. Enable these tokens by the "DEX ALLOW" option.</div>
         <TokenAddress @tokenaddress-submitted="addToken"></TokenAddress>
-        <md-divider></md-divider>
+        <v-divider></v-divider>
         <TokenDetails
           v-for="tokenAddress in erc20Tokens"
           :tokenAddress="tokenAddress"
           v-bind:key="tokenAddress"
         ></TokenDetails>
-      </md-app-content>
-    </md-app>
+      </div>
   </div>
 </template>
 

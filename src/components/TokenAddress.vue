@@ -1,20 +1,20 @@
 <template>
   <div>
-    <md-table>
-      <md-table-row>
-        <md-table-cell>
+    <v-simple-table>
+      <tbody>
+      <tr>
+        <td>
           <div style="text-align: left">Token Address</div>
-        </md-table-cell>
-        <md-table-cell style="width:100%;">
-          <md-field>
-            <md-input v-model="tokenaddress" placeholder="0x..."></md-input>
-          </md-field>
-        </md-table-cell>
-        <md-table-cell>
-          <md-button class="md-fab md-mini md-primary" v-on:click="onSubmit" :disabled="tokenaddress == null"><md-icon>add</md-icon></md-button>  
-        </md-table-cell>
-      </md-table-row>
-    </md-table>
+        </td>
+        <td style="width:100%;">
+            <v-input v-model="tokenaddress" placeholder="0x..."></v-input>
+        </td>
+        <td>
+          <v-btn class="v-fab v-mini v-primary" v-on:click="onSubmit" :disabled="tokenaddress == null"><v-icon>add</v-icon></v-btn>  
+        </td>
+      </tr>
+      </tbody>
+    </v-simple-table>
   </div>
 </template>
 <script>

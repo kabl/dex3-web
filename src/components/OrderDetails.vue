@@ -1,41 +1,43 @@
 <template>
   <div :v-if="order != null">
-    <md-table>
-      <md-table-row>
-        <md-table-cell>Token to Trade</md-table-cell>
-        <md-table-cell>{{ erc20Token.name }} / {{ erc20Token.symbol }}</md-table-cell>
-      </md-table-row>
-      <md-table-row>
-        <md-table-cell>Order Type</md-table-cell>
-        <md-table-cell>{{ orderType }}</md-table-cell>
-      </md-table-row>
-      <md-table-row>
-        <md-table-cell>Price</md-table-cell>
-        <md-table-cell>{{ humanPrice }}</md-table-cell>
-      </md-table-row>
-      <md-table-row>
-        <md-table-cell>Amount</md-table-cell>
-        <md-table-cell>{{ humanAmount }}</md-table-cell>
-      </md-table-row>
-      <md-table-row>
-        <md-table-cell>Fill Option</md-table-cell>
-        <md-table-cell>{{ fillOption }}</md-table-cell>
-      </md-table-row>
-      <md-table-row>
-        <md-table-cell>Lifetime</md-table-cell>
-        <md-table-cell>{{ order.ttl }}</md-table-cell>
-      </md-table-row>
+    <v-simple-table dense>
+      <tbody>
+      <tr>
+        <td>Token to Trade</td>
+        <td>{{ erc20Token.name }} / {{ erc20Token.symbol }}</td>
+      </tr>
+      <tr>
+        <td>Order Type</td>
+        <td>{{ orderType }}</td>
+      </tr>
+      <tr>
+        <td>Price</td>
+        <td>{{ humanPrice }}</td>
+      </tr>
+      <tr>
+        <td>Amount</td>
+        <td>{{ humanAmount }}</td>
+      </tr>
+      <tr>
+        <td>Fill Option</td>
+        <td>{{ fillOption }}</td>
+      </tr>
+      <tr>
+        <td>Lifetime</td>
+        <td>{{ order.ttl }}</td>
+      </tr>
 
-      <!-- <md-table-row>
-        <md-table-cell>Hash</md-table-cell>
-        <md-table-cell>{{ order.hash }}</md-table-cell>
-      </md-table-row>-->
-      <!-- <md-table-row>
-        <md-table-cell>Signature</md-table-cell>
-        <md-table-cell>{{ order.sig }}</md-table-cell>
-      </md-table-row>-->
-    </md-table>
-    <md-field>{{ description }}</md-field>
+      <!-- <tr>
+        <td>Hash</td>
+        <td>{{ order.hash }}</td>
+      </tr>-->
+      <!-- <tr>
+        <td>Signature</td>
+        <td>{{ order.sig }}</td>
+      </tr>-->
+      </tbody>
+    </v-simple-table>
+    <div>{{ description }}</div>
   </div>
 </template>
 

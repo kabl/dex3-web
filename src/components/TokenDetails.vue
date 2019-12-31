@@ -1,53 +1,50 @@
 <template>
   <div>
-    <p />
-    <md-card md-with-hover>
-      <md-card-header>
-        <div class="md-title">
+    <v-card>
+        <div class="v-title">
           <div>
             {{ erc20Token.name }} / {{ erc20Token.symbol }}
           </div>
         </div>
-        <div class="md-subhead">{{ erc20Token.address }}</div>
-      </md-card-header>
-      <md-card-content>
-        <md-table>
-          <md-table-row>
-            <md-table-cell>Balance</md-table-cell>
-            <!-- <md-table-cell>{{ erc20Token.balance }}</md-table-cell> -->
-            <md-table-cell>{{ erc20Token.balanceHumanReadable }}</md-table-cell>            
-            <md-table-cell></md-table-cell>
-          </md-table-row>
-          <md-table-row>
-            <md-table-cell>DEX Allowance</md-table-cell>
-            <md-table-cell>{{ erc20Token.dexAllowanceHumanReadable }}</md-table-cell>
-            <md-table-cell>
-            <md-menu md-size="small">
-              <md-button md-menu-trigger class="md-icon-button md-primary">
-                <md-icon>edit</md-icon>
-              </md-button>
-              <md-menu-content>
-                <md-menu-item>
-                  <md-button
-                    md-menu-trigger
-                    class="md-raised md-accent"
+        <div class="v-subhead">{{ erc20Token.address }}</div>
+        <v-simple-table>
+          <tbody>
+          <tr>
+            <td>Balance</td>
+            <!-- <td>{{ erc20Token.balance }}</td> -->
+            <td>{{ erc20Token.balanceHumanReadable }}</td>            
+            <td></td>
+          </tr>
+          <tr>
+            <td>DEX Allowance</td>
+            <td>{{ erc20Token.dexAllowanceHumanReadable }}</td>
+            <td>
+            <v-menu >
+              <v-btn v-menu-trigger >
+                <v-icon>edit</v-icon>
+              </v-btn>
+              <v-menu-content>
+                <v-menu-item>
+                  <v-btn
+                    v-menu-trigger
+                    class="v-raised v-accent"
                     v-on:click="dexAllow"
-                  >DEX Allow</md-button>
-                </md-menu-item>
-                <md-menu-item>
-                  <md-button
-                    md-menu-trigger
-                    class="md-raised md-accent"
+                  >DEX Allow</v-btn>
+                </v-menu-item>
+                <v-menu-item>
+                  <v-btn
+                    v-menu-trigger
+                    class="v-raised v-accent"
                     v-on:click="dexDeny"
-                  >DEX Deny</md-button>
-                </md-menu-item>
-              </md-menu-content>
-            </md-menu>
-            </md-table-cell>
-          </md-table-row>
-        </md-table>
-      </md-card-content>
-    </md-card>
+                  >DEX Deny</v-btn>
+                </v-menu-item>
+              </v-menu-content>
+            </v-menu>
+            </td>
+          </tr>
+          </tbody>
+        </v-simple-table>
+    </v-card>
   </div>
 </template>
 
