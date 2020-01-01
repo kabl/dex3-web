@@ -1,50 +1,71 @@
 <template>
   <div>
-    <div>Market Taker - Fill Order</div>
-    <div>
-        <label>Signed Maker Order</label>
-        <v-textarea v-model="signedOrder" type="text"></v-textarea>
+    <v-card class="mx-auto" max-width="500">
+      <v-toolbar color="indigo" dark>
+        <v-toolbar-title>Fill Order (Market Taker)</v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar>
 
-        <v-btn class="v-raised v-primary" v-on:click="validateOrder">Validate Order</v-btn>
+      <v-container fluid>
+        <v-row>
+          <v-col cols="12" md="12">
+            <v-textarea outlined name="input-7-4" label="Signed Order JSON" v-model="signedOrder"></v-textarea>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" md="12">
+            <v-btn v-on:click="validateOrder" block color="primary">Validate Order</v-btn>
+          </v-col>
+        </v-row>
+        <v-row v-if="erc20Token">
+          <v-col cols="12" md="12">
+            <OrderDetails :order="order" :erc20Token="erc20Token"></OrderDetails>
+          </v-col>
+        </v-row>
+        <v-row v-if="erc20Token">
+          <v-col cols="12" md="12">
+            <v-text-field v-model="takerAmount" label="Taker Amount" type="number" min="1" required></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row v-if="erc20Token">
+          <v-col
+            cols="12"
+            md="12"
+          >You are about to {{orderActionTaker}} {{takerAmount}} {{erc20Symbol}} Token for {{priceToPay}} WETH</v-col>
+        </v-row>
+        <v-row v-if="erc20Token">
+          <v-btn
+            color="primary"
+            block
+            :disabled="order == null"
+            @click.stop="dialog = true"
+          >Prepare Fill Order</v-btn>
+        </v-row>
+      </v-container>
+    </v-card>
 
-      <OrderDetails v-if="erc20Token" :order="order" :erc20Token="erc20Token"></OrderDetails>
+    <v-dialog v-model="dialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline grey lighten-2"
+          primary-title>OTC Order Created</v-card-title>
+        <v-spacer></v-spacer>
 
-      <div v-if="erc20Token">
-        <label>Taker Amount</label>
-        <v-input v-model="takerAmount" type="number" min="1"></v-input>
-      </div>
+        <v-card-text>You are about to {{orderActionTaker}} {{takerAmount}} {{erc20Symbol}} Token for {{priceToPay}} WETH</v-card-text>
 
-      <v-dialog :v-active.sync="showDialog">
-        <v-dialog-title>OTC Order Created</v-dialog-title>
-        <v-divider />
-        <div>
-          <v-content>
-            <span
-              class="v-display-1"
-            >You are about to {{orderActionTaker}} {{takerAmount}} {{erc20Symbol}} Token for {{priceToPay}} WETH</span>
-          </v-content>
-        </div>
-        <v-divider />
-
-        <v-dialog-actions>
-          <v-btn class="v-raised v-primary" @click="showDialog = false">Abort</v-btn>
-          <v-btn class="v-raised v-accent" v-on:click="fillOrder">Submit Fill Order</v-btn>
-        </v-dialog-actions>
-      </v-dialog>
-
-        <v-btn
-          class="v-raised v-primary"
-          :disabled="order == null"
-          @click="showDialog = true"
-        >Prepare Fill Order</v-btn>
-    </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="dialog = false">Abort</v-btn>
+          <v-btn color="error" v-on:click="fillOrder">Submit Fill Order</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import blockchain from "../js/blockchainInterface";
 import OrderDetails from "../components/OrderDetails.vue";
-import Web3 from 'web3';
+const BigNumber = require("bignumber.js");
 
 export default {
   components: {
@@ -52,11 +73,11 @@ export default {
   },
   data() {
     return {
-      signedOrder: null,
+      signedOrder: "",
       takerAmount: 1,
       order: null,
       erc20Token: null,
-      showDialog: false
+      dialog: false
     };
   },
   computed: {
@@ -72,11 +93,10 @@ export default {
     },
     priceToPay: function() {
       if (this.order === null) return -1;
-      var web3 = new Web3(window.ethereum || "ws://localhost:8545");
-      const price = new web3.BigNumber(this.order.price);
-      const amount = new web3.BigNumber(this.order.amount);
-      const takerAmount = new web3.BigNumber(this.takerAmount);
-      return price.mul(takerAmount).div(amount);
+      const price = new BigNumber(this.order.price);
+      const amount = new BigNumber(this.order.amount);
+      const takerAmount = new BigNumber(this.takerAmount);
+      return price.multipliedBy(takerAmount).dividedBy(amount);
     }
   },
   methods: {
