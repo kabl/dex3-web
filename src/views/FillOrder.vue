@@ -43,7 +43,7 @@
 
 <script>
 import blockchain from "../js/blockchainInterface";
-import OrderDetails from "./OrderDetails.vue";
+import OrderDetails from "../components/OrderDetails.vue";
 import Web3 from 'web3';
 
 export default {

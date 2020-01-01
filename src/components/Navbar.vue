@@ -29,7 +29,7 @@ export default {
     drawer: null,
     links: [
       {icon: "mdi-cloud-upload", text: "Create Order", route: "/"},
-      {icon: "mdi-cloud-download", text: "Fill Order", route: "/about"},
+      {icon: "mdi-cloud-download", text: "Fill Order", route: "/fill-order"},
     ]
   })
 };

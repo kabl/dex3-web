@@ -96,6 +96,7 @@
 import blockchain from "../js/blockchainInterface";
 
 export default {
+  name: "CreateOrder",
   data() {
     return {
       tokenaddress: "0x201368dC6131E58Ba3fCe122187C669e6d21CD2F",
