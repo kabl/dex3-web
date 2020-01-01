@@ -4,7 +4,7 @@
       <v-list dense>
         <v-list-item link>
           <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
+            <v-icon>mdi-cloud-upload</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Create Order</v-list-item-title>
@@ -12,7 +12,7 @@
         </v-list-item>
         <v-list-item link>
           <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
+            <v-icon>mdi-cloud-download</v-icon>
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Fill Order</v-list-item-title>
