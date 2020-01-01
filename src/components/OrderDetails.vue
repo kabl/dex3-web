@@ -2,39 +2,30 @@
   <div :v-if="order != null">
     <v-simple-table dense>
       <tbody>
-      <tr>
-        <td>Token to Trade</td>
-        <td>{{ erc20Token.name }} / {{ erc20Token.symbol }}</td>
-      </tr>
-      <tr>
-        <td>Order Type</td>
-        <td>{{ orderType }}</td>
-      </tr>
-      <tr>
-        <td>Price</td>
-        <td>{{ humanPrice }}</td>
-      </tr>
-      <tr>
-        <td>Amount</td>
-        <td>{{ humanAmount }}</td>
-      </tr>
-      <tr>
-        <td>Fill Option</td>
-        <td>{{ fillOption }}</td>
-      </tr>
-      <tr>
-        <td>Lifetime</td>
-        <td>{{ order.ttl }}</td>
-      </tr>
-
-      <!-- <tr>
-        <td>Hash</td>
-        <td>{{ order.hash }}</td>
-      </tr>-->
-      <!-- <tr>
-        <td>Signature</td>
-        <td>{{ order.sig }}</td>
-      </tr>-->
+        <tr>
+          <td>Token to Trade</td>
+          <td>{{ erc20Token.name }} / {{ erc20Token.symbol }}</td>
+        </tr>
+        <tr>
+          <td>Order Type</td>
+          <td>{{ orderType }}</td>
+        </tr>
+        <tr>
+          <td>Price per Token</td>
+          <td>{{ pricePerToken }} WETH</td>
+        </tr>
+        <tr>
+          <td>Amount</td>
+          <td>{{ humanAmount }} {{ erc20Token.symbol }}</td>
+        </tr>
+        <tr>
+          <td>Fill Option</td>
+          <td>{{ fillOption }}</td>
+        </tr>
+        <tr>
+          <td>Lifetime</td>
+          <td>{{ expireDate }}</td>
+        </tr>
       </tbody>
     </v-simple-table>
     <div>{{ description }}</div>
@@ -42,7 +33,9 @@
 </template>
 
 <script>
-import blockchain from '../js/blockchainInterface';
+import blockchain from "../js/blockchainInterface";
+const BigNumber = require("bignumber.js");
+
 export default {
   props: {
     order: {
@@ -65,15 +58,38 @@ export default {
       if (this.order.partialFillAllowed == 1) return "Allow partial order fill";
       return "Error FillOption";
     },
+    pricePerToken: function() {
+      if (this.order === null) return -1;
+      const price = new BigNumber(this.order.price);
+      const amount = new BigNumber(this.order.amount);
+      return price.dividedBy(amount);
+    },
     humanAmount: function() {
-      return blockchain.toHumanNumber(this.order.amount, this.erc20Token.decimals);
+      return blockchain.toHumanNumber(
+        this.order.amount,
+        this.erc20Token.decimals
+      );
+    },
+    expireDate: function() {
+      var date = new Date(this.order.ttl*1000);
+      return date.toISOString();
     },
     humanPrice: function() {
       return blockchain.toHumanNumber(this.order.price, 18);
     },
     description: function() {
       var buySell = this.order.isSellOrder == 0 ? "buy" : "sell";
-      return "Market maker offers to " + buySell + " " + this.humanAmount + " " + this.erc20Token.symbol + " for " + this.humanPrice + " WETH."
+      return (
+        "Market maker offers to " +
+        buySell +
+        " " +
+        this.humanAmount +
+        " " +
+        this.erc20Token.symbol +
+        " for " +
+        this.humanPrice +
+        " WETH."
+      );
     }
   }
 };

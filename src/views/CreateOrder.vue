@@ -23,7 +23,7 @@
         </v-row>
         <v-row no-gutters>
           <v-col>
-            <v-text-field v-model="makerPrice" label="Total price (WETH)" type="text" required></v-text-field>
+            <v-text-field v-model="makerPrice" label="Trading price per Token in WETH" type="text" required></v-text-field>
           </v-col>
         </v-row>
         <v-row no-gutters>
@@ -52,7 +52,7 @@
         </v-row>
         <v-row no-gutters>
           <v-col md="12" cols="12">
-            <v-btn color="primary" v-on:click="signOrder" block>Crate and Sign Order</v-btn>
+            <v-btn color="primary" v-on:click="signOrder" block>Create and Sign Order</v-btn>
           </v-col>
         </v-row>
       </v-container>
@@ -84,8 +84,8 @@ export default {
   data() {
     return {
       tokenaddress: "0x201368dC6131E58Ba3fCe122187C669e6d21CD2F",
-      makerPrice: "100",
-      makerAmount: "1000",
+      makerPrice: "1",
+      makerAmount: "10",
       isSellOrder: "1",
       isPartialFillable: "1",
       lifetime: "604800",
@@ -107,7 +107,8 @@ export default {
         tokenToTrade.decimals
       );
       console.log("amount: ", amount);
-      var price = blockchain.toContractNumber(this.makerPrice, 18);
+      var totalPrice = parseFloat(this.makerPrice) * parseFloat(this.makerAmount);
+      var price = blockchain.toContractNumber(totalPrice, 18);
       console.log("price: ", price);
 
       var order = {
