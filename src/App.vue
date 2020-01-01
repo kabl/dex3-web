@@ -1,39 +1,22 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-     
+    <v-app-bar app color="primary" dark>
+      <v-toolbar-title>DEX3 - Simple, Fast, Reliable</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
+      <TokenContainer />
 
-      <div class="v-layout v-gutter" :class="`v-alignment-top-center`">
-        <div class="v-layout-item v-size-40">
-          <TokenContainer />
-        </div>
-        <div class="v-layout-item v-size-40">
-          <div>
-            <div>Create or Fill Order</div>
-
-
-              <div>
-                <v-radio v-model="isMarketMaker" :value="true">Create a new Order</v-radio>
-                <v-radio v-model="isMarketMaker" :value="false">Fill an existing Order</v-radio>
-              </div>
-          </div>
-
-          <div class="v-layout-item" v-if="isMarketMaker">
-            <CreateOrder />
-          </div>
-          <div class="v-layout-item" v-else>
-            <FillOrder />
-          </div>
+      <div>
+        <div>Create or Fill Order</div>
+        <div>
+          <v-radio v-model="isMarketMaker" :value="true">Create a new Order</v-radio>
+          <v-radio v-model="isMarketMaker" :value="false">Fill an existing Order</v-radio>
         </div>
       </div>
 
+      <CreateOrder />
+      <FillOrder />
     </v-content>
   </v-app>
 </template>
