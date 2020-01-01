@@ -23,12 +23,12 @@
         </v-row>
         <v-row no-gutters>
           <v-col>
-            <v-text-field v-model="makerAmount" label="Amount to trade" type="text" required></v-text-field>
+            <v-text-field v-model="makerPrice" label="Total price (WETH)" type="text" required></v-text-field>
           </v-col>
         </v-row>
         <v-row no-gutters>
           <v-col>
-            <v-text-field v-model="makerPrice" label="Total price (WETH)" type="text" required></v-text-field>
+            <v-text-field v-model="makerAmount" label="Amount of Tokens to trade" type="text" required></v-text-field>
           </v-col>
         </v-row>
         <v-row no-gutters>
