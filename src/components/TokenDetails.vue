@@ -1,51 +1,45 @@
 <template>
-  <div>
-    <v-card>
-        <div class="v-title">
-          <div>
-            {{ erc20Token.name }} / {{ erc20Token.symbol }}
-          </div>
-        </div>
-        <div class="v-subhead">{{ erc20Token.address }}</div>
-        <v-simple-table>
-          <tbody>
+  <v-card>
+    <v-card-title>{{ erc20Token.name }} / {{ erc20Token.symbol }}</v-card-title>
+    <v-card-subtitle>{{ erc20Token.address }}</v-card-subtitle>
+    <v-card-text>
+      <v-simple-table dense>
+        <tbody>
           <tr>
             <td>Balance</td>
             <!-- <td>{{ erc20Token.balance }}</td> -->
-            <td>{{ erc20Token.balanceHumanReadable }}</td>            
+            <td>{{ erc20Token.balanceHumanReadable }}</td>
             <td></td>
           </tr>
           <tr>
             <td>DEX Allowance</td>
             <td>{{ erc20Token.dexAllowanceHumanReadable }}</td>
             <td>
-            <v-menu >
-              <v-btn v-menu-trigger >
-                <v-icon>edit</v-icon>
-              </v-btn>
-              <v-menu-content>
-                <v-menu-item>
-                  <v-btn
-                    v-menu-trigger
-                    class="v-raised v-accent"
-                    v-on:click="dexAllow"
-                  >DEX Allow</v-btn>
-                </v-menu-item>
-                <v-menu-item>
-                  <v-btn
-                    v-menu-trigger
-                    class="v-raised v-accent"
-                    v-on:click="dexDeny"
-                  >DEX Deny</v-btn>
-                </v-menu-item>
-              </v-menu-content>
-            </v-menu>
+              <v-menu offset-y>
+                <template v-slot:activator="{ on }">
+                  <v-btn text icon color="primary" v-on="on">
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-list-item-title>
+                      <v-btn color="primary" v-on:click="dexAllow" small block>DEX Allow</v-btn>
+                    </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>
+                      <v-btn color="primary" v-on:click="dexDeny" small block>DEX Deny</v-btn>
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </td>
           </tr>
-          </tbody>
-        </v-simple-table>
-    </v-card>
-  </div>
+        </tbody>
+      </v-simple-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -64,9 +58,9 @@ export default {
     };
   },
   computed: {
-     tokenValue: function() {
-       return "OK";
-     }
+    tokenValue: function() {
+      return "OK";
+    }
   },
   created: async function() {
     await this.refresh();

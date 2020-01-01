@@ -2,17 +2,24 @@
   <div>
     <v-simple-table>
       <tbody>
-      <tr>
-        <td>
-          <div style="text-align: left">Token Address</div>
-        </td>
-        <td style="width:100%;">
+        <tr>
+          <td style="width:100%;">
             <v-input v-model="tokenaddress" placeholder="0x..."></v-input>
-        </td>
-        <td>
-          <v-btn class="v-fab v-mini v-primary" v-on:click="onSubmit" :disabled="tokenaddress == null"><v-icon>add</v-icon></v-btn>  
-        </td>
-      </tr>
+            <v-text-field v-model="tokenaddress" label="Token address 0x..." required></v-text-field>
+          </td>
+          <td>
+            <v-btn
+              small
+              class="mx-2"
+              fab
+              color="indigo"
+              v-on:click="onSubmit"
+              :disabled="tokenaddress === ''"
+            >
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </td>
+        </tr>
       </tbody>
     </v-simple-table>
   </div>
@@ -23,7 +30,7 @@ import blockchain from "../js/blockchainInterface";
 export default {
   data() {
     return {
-      tokenaddress: null
+      tokenaddress: ''
     };
   },
   methods: {
