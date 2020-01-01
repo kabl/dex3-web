@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mx-auto" >
+    <v-card class="mx-auto">
       <v-toolbar color="indigo" dark>
         <v-toolbar-title>Fill Order (Market Taker)</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -34,20 +34,21 @@
           >You are about to {{orderActionTaker}} {{takerAmount}} {{erc20Symbol}} Token for {{priceToPay}} WETH</v-col>
         </v-row>
         <v-row v-if="erc20Token">
-          <v-btn
-            color="primary"
-            block
-            :disabled="order == null"
-            @click.stop="dialog = true"
-          >Prepare Fill Order</v-btn>
+          <v-col>
+            <v-btn
+              color="primary"
+              block
+              :disabled="order == null"
+              @click.stop="dialog = true"
+            >Prepare Fill Order</v-btn>
+          </v-col>
         </v-row>
       </v-container>
     </v-card>
 
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
-        <v-card-title class="headline grey lighten-2"
-          primary-title>Fill Order</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title>Fill Order</v-card-title>
         <v-spacer></v-spacer>
 
         <v-card-text>You are about to {{orderActionTaker}} {{takerAmount}} {{erc20Symbol}} Token for {{priceToPay}} WETH</v-card-text>
