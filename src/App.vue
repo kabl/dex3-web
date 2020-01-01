@@ -4,6 +4,9 @@
     <v-content>
       <v-container>
         <router-view />
+        <br>
+        <v-divider />
+        <br>
         <TokenContainer />
       </v-container>
     </v-content>
