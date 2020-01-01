@@ -1,95 +1,79 @@
 <template>
   <div>
-    <div class="v-title">Market Maker - Create Order</div>
-      <v-simple-table dense>
-        <tbody>
-        <tr>
-          <td>
-            <div style="text-align: left">Token Address</div>
-          </td>
-          <td>
-              <v-input v-model="tokenaddress" type="text" placeholder="0x..."></v-input>
-          </td>
-        </tr>
+    <v-card class="mx-auto" max-width="500">
+      <v-toolbar color="indigo" dark>
+        <v-toolbar-title>Create Order (Market Maker)</v-toolbar-title>
+        <v-spacer></v-spacer>
+      </v-toolbar>
 
-        <tr>
-          <td>
-            <div style="text-align: left">Order Type</div>
-          </td>
-          <td>
-            <div style="text-align: left">
-              <v-radio v-model="isSellOrder" value="1">Sell Order</v-radio>
-              <br />
-              <v-radio v-model="isSellOrder" value="0">Buy Order</v-radio>
-            </div>
-          </td>
-        </tr>
+      <v-container fluid>
+        <v-row no-gutters>
+          <v-col>
+            <v-text-field v-model="tokenaddress" label="Token Address" type="text" required></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col md="6" cols="6">Order Type</v-col>
+          <v-col md="6" cols="6">
+            <v-radio-group v-model="isSellOrder" :mandatory="true">
+              <v-radio color="indigo" value="1" label="Sell Order"></v-radio>
+              <v-radio color="indigo" value="0" label="Buy Order"></v-radio>
+            </v-radio-group>
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col>
+            <v-text-field v-model="makerAmount" label="Amount to trade" type="text" required></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col>
+            <v-text-field v-model="makerPrice" label="Total price (WETH)" type="text" required></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col md="6" cols="6">Order Fill option</v-col>
+          <v-col md="6" cols="6">
+            <v-radio-group v-model="isPartialFillable" :mandatory="true">
+              <v-radio color="indigo" value="1" label="Allow partial order fill"></v-radio>
+              <v-radio color="indigo" value="0" label="Require full order fill"></v-radio>
+            </v-radio-group>
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col md="6" cols="6">Order lifetime</v-col>
+          <v-col md="6" cols="6">
+            <v-radio-group v-model="lifetime" :mandatory="true">
+              <v-radio color="indigo" value="300" label="5 min"></v-radio>
+              <v-radio color="indigo" value="1800" label="30 min"></v-radio>
+              <v-radio color="indigo" value="604800" label="1 week"></v-radio>
+            </v-radio-group>
+          </v-col>
+        </v-row>
+        <v-row no-gutters>
+          <v-col md="12" cols="12">
+            <v-btn color="primary" v-on:click="signOrder" block>Crate and Sign Order</v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-card>
 
-        <tr>
-          <td>
-            <div style="text-align: left">Amount to trade</div>
-          </td>
-          <td>
-              <v-input v-model="makerAmount" type="text" value="1000" />
-          </td>
-        </tr>
+    <v-dialog v-model="dialog" max-width="700">
+      <v-card>
+        <v-card-title class="headline grey lighten-2" primary-title>OTC Order Created</v-card-title>
+        <v-spacer></v-spacer>
 
-        <tr>
-          <td>
-            <div style="text-align: left">Total price (WETH)</div>
-          </td>
-          <td>
-              <v-input v-model="makerPrice" type="text" value="100" />
-          </td>
-        </tr>
+        <v-card-text>
+          <code style="word-break: break-all;">{{ jsonOrder }}</code>
+        </v-card-text>
 
-        <tr>
-          <td>
-            <div style="text-align: left">Order Fill option</div>
-          </td>
-          <td>
-            <div style="text-align: left">
-              <v-radio v-model="isPartialFillable" value="1">Allow partial order fill</v-radio>
-              <br />
-              <v-radio v-model="isPartialFillable" value="0">Require full order fill</v-radio>
-            </div>
-          </td>
-        </tr>
-
-        <tr>
-          <td>
-            <div style="text-align: left">Order lifetime</div>
-          </td>
-          <td>
-            <div style="text-align: left">
-              <v-radio v-model="lifetime" value="300">5 min</v-radio>
-              <v-radio v-model="lifetime" value="1800">30 min</v-radio>
-              <v-radio v-model="lifetime" value="604800">1 week</v-radio>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </v-simple-table>
-
-      <v-dialog :v-active.sync="showDialog">
-        <v-dialog-title>OTC Order Created</v-dialog-title>
-        <v-divider />
-        <div>
-          <v-content>
-            <code style="white-space: pre-line">{{ jsonOrder }}</code>
-          </v-content>
-        </div>
-        <v-divider />
-
-        <v-dialog-actions>
-          <v-btn class="v-primary" @click="showDialog = false">Close</v-btn>
-        </v-dialog-actions>
-      </v-dialog>
-
-      <!-- Button -->
-        <v-btn class="v-raised" v-on:click="createOrder">Create Order</v-btn>
-        <v-btn class="v-raised v-accent" v-on:click="signOrder">Sign Order</v-btn>
-    </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="dialog = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -105,7 +89,7 @@ export default {
       isSellOrder: "1",
       isPartialFillable: "1",
       lifetime: "604800",
-      showDialog: false,
+      dialog: false,
       jsonOrder: null
     };
   },
@@ -115,8 +99,13 @@ export default {
 
       var ttl = Math.floor(Date.now() / 1000);
       ttl = ttl + parseInt(this.lifetime, 10);
-      var tokenToTrade = await blockchain.getPersonalTokenInfo(this.tokenaddress);
-      var amount = blockchain.toContractNumber(this.makerAmount, tokenToTrade.decimals);
+      var tokenToTrade = await blockchain.getPersonalTokenInfo(
+        this.tokenaddress
+      );
+      var amount = blockchain.toContractNumber(
+        this.makerAmount,
+        tokenToTrade.decimals
+      );
       console.log("amount: ", amount);
       var price = blockchain.toContractNumber(this.makerPrice, 18);
       console.log("price: ", price);
@@ -143,7 +132,7 @@ export default {
       order.sig = await blockchain.signHash(order.hash);
       this.jsonOrder = JSON.stringify(order, null, 2);
       console.log("Signed Order:", this.jsonOrder);
-      this.showDialog = true;
+      this.dialog = true;
     }
   }
 };

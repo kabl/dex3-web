@@ -47,7 +47,7 @@
     <v-dialog v-model="dialog" max-width="290">
       <v-card>
         <v-card-title class="headline grey lighten-2"
-          primary-title>OTC Order Created</v-card-title>
+          primary-title>Fill Order</v-card-title>
         <v-spacer></v-spacer>
 
         <v-card-text>You are about to {{orderActionTaker}} {{takerAmount}} {{erc20Symbol}} Token for {{priceToPay}} WETH</v-card-text>
