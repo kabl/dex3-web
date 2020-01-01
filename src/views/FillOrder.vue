@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mx-auto" max-width="500">
+    <v-card class="mx-auto" >
       <v-toolbar color="indigo" dark>
         <v-toolbar-title>Fill Order (Market Taker)</v-toolbar-title>
         <v-spacer></v-spacer>

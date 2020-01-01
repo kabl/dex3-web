@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mx-auto" max-width="500">
+  <v-card class="mx-auto">
     <v-toolbar color="indigo" dark>
       <v-toolbar-title>Token Management</v-toolbar-title>
       <v-spacer></v-spacer>
