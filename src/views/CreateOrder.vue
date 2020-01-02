@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mx-auto" >
+    <v-card class="mx-auto">
       <v-toolbar color="indigo" dark>
         <v-toolbar-title>Create Order (Market Maker)</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -9,7 +9,14 @@
       <v-container fluid>
         <v-row no-gutters>
           <v-col>
-            <v-text-field v-model="tokenaddress" label="Token Address" type="text" required></v-text-field>
+            <v-select
+              v-model="tokenToTrade"
+              :items="$store.getters.tokens"
+              item-text="name"
+              return-object
+              label="Token to Trade"
+              required
+            ></v-select>
           </v-col>
         </v-row>
         <v-row no-gutters>
@@ -23,12 +30,22 @@
         </v-row>
         <v-row no-gutters>
           <v-col>
-            <v-text-field v-model="makerPrice" label="Trading price per Token in WETH" type="text" required></v-text-field>
+            <v-text-field
+              v-model="makerPrice"
+              label="Trading price per Token in WETH"
+              type="text"
+              required
+            ></v-text-field>
           </v-col>
         </v-row>
         <v-row no-gutters>
           <v-col>
-            <v-text-field v-model="makerAmount" label="Amount of Tokens to trade" type="text" required></v-text-field>
+            <v-text-field
+              v-model="makerAmount"
+              label="Amount of Tokens to trade"
+              type="text"
+              required
+            ></v-text-field>
           </v-col>
         </v-row>
         <v-row no-gutters>
@@ -83,7 +100,7 @@ export default {
   name: "CreateOrder",
   data() {
     return {
-      tokenaddress: "0x201368dC6131E58Ba3fCe122187C669e6d21CD2F",
+      tokenToTrade: {},
       makerPrice: "1",
       makerAmount: "10",
       isSellOrder: "1",
@@ -95,24 +112,22 @@ export default {
   },
   methods: {
     async createOrder() {
-      console.log("Create order clicked");
+      console.log("Create order clicked:", this.tokenToTrade);
 
       var ttl = Math.floor(Date.now() / 1000);
       ttl = ttl + parseInt(this.lifetime, 10);
-      var tokenToTrade = await blockchain.getPersonalTokenInfo(
-        this.tokenaddress
-      );
       var amount = blockchain.toContractNumber(
         this.makerAmount,
-        tokenToTrade.decimals
+        this.tokenToTrade.decimals
       );
       console.log("amount: ", amount);
-      var totalPrice = parseFloat(this.makerPrice) * parseFloat(this.makerAmount);
+      var totalPrice =
+        parseFloat(this.makerPrice) * parseFloat(this.makerAmount);
       var price = blockchain.toContractNumber(totalPrice, 18);
       console.log("price: ", price);
 
       var order = {
-        token: this.tokenaddress,
+        token: this.tokenToTrade.address,
         price: price,
         amount: amount,
         isSellOrder: parseInt(this.isSellOrder),
