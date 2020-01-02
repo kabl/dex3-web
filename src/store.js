@@ -6,7 +6,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    tokens: []
+    tokens: [],
+    dex3Address: "0x7bd8D3C2E363c157b50373840239dA24BC3F7d57"
   },
   mutations: {
     updateToken(state, tokenInfo) {
@@ -27,5 +28,6 @@ export default new Vuex.Store({
   },
   getters: {
     tokens: state => state.tokens,
+    dex3Addr: state => state.dex3Address,
   }
 })

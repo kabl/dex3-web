@@ -3,6 +3,7 @@ import Web3 from 'web3';
 import { ethers } from 'ethers';
 import erc20abi from '../abi/erc20abi';
 import dex3Abi from '../abi/dex3';
+import store from '../store'
 
 var web3 = new Web3(window.ethereum || "ws://localhost:8545");
 
@@ -13,7 +14,7 @@ window.ethereum.enable().then(function (addresses) {
 var blockchain = {
 
     getDex3Addr() {
-        return "0x7bd8D3C2E363c157b50373840239dA24BC3F7d57";
+        return store.getters.dex3Addr;
     },
 
     getWeb3() {

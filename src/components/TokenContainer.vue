@@ -30,20 +30,11 @@
 <script>
 import TokenAddress from "./TokenAddress.vue";
 import TokenDetails from "./TokenDetails.vue";
-import blockchain from "../js/blockchainInterface";
 
 export default {
   components: {
     TokenAddress,
     TokenDetails
-  },
-  created: async function() {
-    // var token = await blockchain.getDex3BaseToken();
-    // this.addToken(token);
-    // var t1 = await blockchain.getPersonalTokenInfo(
-    //   "0x201368dC6131E58Ba3fCe122187C669e6d21CD2F"
-    // );
-    // this.addToken(t1);
   },
   methods: {
     addToken(address) {
