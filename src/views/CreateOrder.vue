@@ -112,7 +112,7 @@ export default {
   },
   methods: {
     async createOrder() {
-      console.log("Create order clicked:", this.tokenToTrade);
+      console.log("Create order clicked");
 
       var ttl = Math.floor(Date.now() / 1000);
       ttl = ttl + parseInt(this.lifetime, 10);
