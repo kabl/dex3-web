@@ -18,9 +18,9 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-row v-for="tokenAddress in erc20Tokens" v-bind:key="tokenAddress">
+      <v-row v-for="token in $store.getters.tokens" v-bind:key="token.address">
         <v-col>
-          <TokenDetails :tokenAddress="tokenAddress"></TokenDetails>
+          <TokenDetails :token="token"></TokenDetails>
         </v-col>
       </v-row>
     </v-container>
@@ -37,21 +37,18 @@ export default {
     TokenAddress,
     TokenDetails
   },
-  data() {
-    return { erc20Tokens: [] };
-  },
   created: async function() {
-    var token = await blockchain.getDex3BaseToken();
-    this.addToken(token);
-    var t1 = await blockchain.getPersonalTokenInfo(
-      "0x201368dC6131E58Ba3fCe122187C669e6d21CD2F"
-    );
-    this.addToken(t1);
+    // var token = await blockchain.getDex3BaseToken();
+    // this.addToken(token);
+    // var t1 = await blockchain.getPersonalTokenInfo(
+    //   "0x201368dC6131E58Ba3fCe122187C669e6d21CD2F"
+    // );
+    // this.addToken(t1);
   },
   methods: {
-    addToken(erc20Token) {
-      console.log("Adding erc20Token:", erc20Token);
-      this.erc20Tokens.push(erc20Token.address);
+    addToken(address) {
+      console.log("Adding erc20Token:", address);
+      this.$store.dispatch("updateToken", address);
     }
   }
 };

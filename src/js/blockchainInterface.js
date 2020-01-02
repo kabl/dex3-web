@@ -20,13 +20,8 @@ var blockchain = {
         return web3;
     },
 
-    showMessage() {
-        console.log("Message");
-    },
-
     async getERC20Instance(address) {
         var coinbase = await web3.eth.getCoinbase();
-        console.log("Coinbase:", coinbase);
         var erc20Instance = new web3.eth.Contract(erc20abi, address, {
             from: coinbase, // default from address
             gasPrice: "20000000000" // default gas price in wei, 20 gwei in this case
@@ -75,7 +70,6 @@ var blockchain = {
 
     async getDex3Instance() {
         var coinbase = await web3.eth.getCoinbase();
-        console.log("Coinbase:", coinbase);
         var dex3Instance = new web3.eth.Contract(dex3Abi, blockchain.getDex3Addr(), {
             from: coinbase, // default from address
             gasPrice: "20000000000" // default gas price in wei, 20 gwei in this case
@@ -84,9 +78,13 @@ var blockchain = {
         return dex3Instance;
     },
 
-    async getDex3BaseToken() {
+    async getDex3BaseTokenAddr() {
         var dex3 = await blockchain.getDex3Instance();
-        var baseTokenAddr = await dex3.methods.getBaseToken().call();
+        return await dex3.methods.getBaseToken().call();
+    },
+
+    async getDex3BaseToken() {
+        var baseTokenAddr = await blockchain.getDex3BaseTokenAddr();
         return await blockchain.getPersonalTokenInfo(baseTokenAddr);
     },
 

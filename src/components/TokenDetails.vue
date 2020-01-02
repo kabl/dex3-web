@@ -1,19 +1,19 @@
 <template>
   <v-card>
-    <v-card-title>{{ erc20Token.name }} / {{ erc20Token.symbol }}</v-card-title>
-    <v-card-subtitle>{{ erc20Token.address }}</v-card-subtitle>
+    <v-card-title>{{ token.name }} / {{ token.symbol }}</v-card-title>
+    <v-card-subtitle>{{ token.address }}</v-card-subtitle>
     <v-card-text>
       <v-simple-table dense>
         <tbody>
           <tr>
             <td>Balance</td>
-            <!-- <td>{{ erc20Token.balance }}</td> -->
-            <td>{{ erc20Token.balanceHumanReadable }}</td>
+            <!-- <td>{{ token.balance }}</td> -->
+            <td>{{ token.balanceHumanReadable }}</td>
             <td></td>
           </tr>
           <tr>
             <td>DEX Allowance</td>
-            <td>{{ erc20Token.dexAllowanceHumanReadable }}</td>
+            <td>{{ token.dexAllowanceHumanReadable }}</td>
             <td>
               <v-menu offset-y>
                 <template v-slot:activator="{ on }">
@@ -47,41 +47,25 @@ import blockchain from "../js/blockchainInterface";
 
 export default {
   props: {
-    tokenAddress: {
-      type: String,
+    token: {
+      type: Object,
       required: true
     }
   },
-  data() {
-    return {
-      erc20Token: {}
-    };
-  },
-  computed: {
-    tokenValue: function() {
-      return "OK";
-    }
-  },
   created: async function() {
-    await this.refresh();
     this.interval = setInterval(this.refresh, 2000);
   },
   methods: {
     async dexAllow() {
-      await blockchain.dexAllow(
-        this.erc20Token.address,
-        this.erc20Token.balance
-      );
+      await blockchain.dexAllow(this.token.address, this.token.balance);
       await this.refresh();
     },
     async dexDeny() {
-      await blockchain.dexDeny(this.erc20Token.address);
+      await blockchain.dexDeny(this.token.address);
       await this.refresh();
     },
     async refresh() {
-      this.erc20Token = await blockchain.getPersonalTokenInfo(
-        this.tokenAddress
-      );
+      this.$store.dispatch("updateToken", this.token.address);
     }
   }
 };

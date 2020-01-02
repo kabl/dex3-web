@@ -25,7 +25,6 @@
   </div>
 </template>
 <script>
-import blockchain from "../js/blockchainInterface";
 
 export default {
   data() {
@@ -35,13 +34,10 @@ export default {
   },
   methods: {
     async onSubmit() {
-      // var web3 = blockchain.getWeb3();
-      blockchain.showMessage();
-      var info = await blockchain.getPersonalTokenInfo(this.tokenaddress);
-      console.log("info:", info);
+      console.log("info:", this.tokenaddress);
 
-      this.$emit("tokenaddress-submitted", info);
-      this.tokenaddress = null;
+      this.$emit("tokenaddress-submitted", this.tokenaddress);
+      this.tokenaddress = '';
     }
   }
 };
