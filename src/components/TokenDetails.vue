@@ -65,6 +65,7 @@ export default {
       await this.refresh();
     },
     async refresh() {
+      // TODO: Listen to events instead of pulling. 
       this.$store.dispatch("updateToken", this.token.address);
     }
   }
