@@ -3,20 +3,16 @@
     <v-simple-table dense>
       <tbody>
         <tr>
-          <td>Token to Trade</td>
-          <td>{{ erc20Token.name }} / {{ erc20Token.symbol }}</td>
+          <td>Trading pair</td>
+          <td>{{ erc20Token.symbol }}/WETH</td>
         </tr>
         <tr>
           <td>Order Type</td>
           <td>{{ orderType }}</td>
         </tr>
         <tr>
-          <td>Price per Token</td>
-          <td>{{ pricePerToken }} WETH</td>
-        </tr>
-        <tr>
-          <td>Amount</td>
-          <td>{{ humanAmount }} {{ erc20Token.symbol }}</td>
+          <td>Available Position</td>
+          <td>{{ humanAmount }} @ {{ pricePerToken }} WETH</td>
         </tr>
         <tr>
           <td>Fill Option</td>
@@ -28,6 +24,7 @@
         </tr>
       </tbody>
     </v-simple-table>
+    <br>
     <div>{{ description }}</div>
   </div>
 </template>

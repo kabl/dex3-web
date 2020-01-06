@@ -46,12 +46,33 @@
       </v-container>
     </v-card>
 
-    <v-dialog v-model="dialog" max-width="290">
+    <v-dialog v-model="dialog" max-width="500">
       <v-card>
-        <v-card-title class="headline grey lighten-2" primary-title>Fill Order</v-card-title>
+        <v-card-title class="headline grey lighten-2" primary-title>Fill Order Summary</v-card-title>
         <v-spacer></v-spacer>
 
-        <v-card-text>You are about to {{orderActionTaker}} {{takerAmount}} {{erc20Symbol}} Token for {{priceToPay}} WETH</v-card-text>
+        <v-card-text>
+          <v-simple-table dense>
+            <tbody>
+              <tr>
+                <td>Order Type</td>
+                <td>Limit {{orderActionTaker}} Order</td>
+              </tr>
+              <tr>
+                <td>Trading Pair</td>
+                <td>{{erc20Symbol}}/WETH</td>
+              </tr>
+              <tr>
+                <td>Position</td>
+                <td>{{takerAmount}} @ {{pricePerToken}}</td>
+              </tr>
+              <tr>
+                <td>Nominal Value</td>
+                <td>{{priceToPay}} WETH</td>
+              </tr>
+            </tbody>
+          </v-simple-table>
+        </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -98,6 +119,12 @@ export default {
       const amount = new BigNumber(this.order.amount);
       const takerAmount = new BigNumber(this.takerAmount);
       return price.multipliedBy(takerAmount).dividedBy(amount);
+    },
+    pricePerToken: function() {
+      if (this.order === null) return -1;
+      const price = new BigNumber(this.order.price);
+      const amount = new BigNumber(this.order.amount);
+      return price.dividedBy(amount);
     }
   },
   methods: {
