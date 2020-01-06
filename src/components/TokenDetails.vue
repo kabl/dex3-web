@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title>{{ token.name }} / {{ token.symbol }}</v-card-title>
+    <v-card-title>{{ token.name }} - {{ token.symbol }}</v-card-title>
     <v-card-subtitle>{{ token.address }}</v-card-subtitle>
     <v-card-text>
       <v-simple-table dense>

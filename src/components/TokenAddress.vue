@@ -29,7 +29,7 @@
 export default {
   data() {
     return {
-      tokenaddress: ''
+      tokenaddress: '0xb6202bd9E3Db826a2E7a92d4FBD981d61942Cce2'
     };
   },
   methods: {
