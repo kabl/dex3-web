@@ -24,12 +24,12 @@
                 <v-list>
                   <v-list-item>
                     <v-list-item-title>
-                      <v-btn color="primary" v-on:click="dexAllow" small block>DEX Allow</v-btn>
+                      <v-btn color="warning" v-on:click="dexAllow" small block>DEX Allow</v-btn>
                     </v-list-item-title>
                   </v-list-item>
                   <v-list-item>
                     <v-list-item-title>
-                      <v-btn color="primary" v-on:click="dexDeny" small block>DEX Deny</v-btn>
+                      <v-btn color="warning" v-on:click="dexDeny" small block>DEX Deny</v-btn>
                     </v-list-item-title>
                   </v-list-item>
                 </v-list>

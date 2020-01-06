@@ -56,7 +56,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn @click="dialog = false">Abort</v-btn>
-          <v-btn color="error" v-on:click="fillOrder">Submit Fill Order</v-btn>
+          <v-btn color="warning" v-on:click="fillOrder">Submit Fill Order</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
