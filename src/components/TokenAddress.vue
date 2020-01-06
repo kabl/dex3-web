@@ -25,11 +25,12 @@
   </div>
 </template>
 <script>
+import eventListener from "../js/eventListener";
 
 export default {
   data() {
     return {
-      tokenaddress: '0xb6202bd9E3Db826a2E7a92d4FBD981d61942Cce2'
+      tokenaddress: "0xb6202bd9E3Db826a2E7a92d4FBD981d61942Cce2"
     };
   },
   methods: {
@@ -37,7 +38,9 @@ export default {
       console.log("info:", this.tokenaddress);
 
       this.$emit("tokenaddress-submitted", this.tokenaddress);
-      this.tokenaddress = '';
+      await eventListener.registerERC20Events(this.tokenaddress);
+
+      this.tokenaddress = "";
     }
   }
 };

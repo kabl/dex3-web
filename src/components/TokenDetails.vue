@@ -53,7 +53,7 @@ export default {
     }
   },
   created: async function() {
-    this.interval = setInterval(this.refresh, 2000);
+    this.interval = setInterval(this.refresh, 20000);
   },
   methods: {
     async dexAllow() {
@@ -65,7 +65,6 @@ export default {
       await this.refresh();
     },
     async refresh() {
-      // TODO: Listen to events instead of pulling. 
       this.$store.dispatch("updateToken", this.token.address);
     }
   }

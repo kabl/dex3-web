@@ -22,7 +22,8 @@
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import TokenContainer from "./components/TokenContainer.vue";
-import blockchain from "./js/blockchainInterface"
+import blockchain from "./js/blockchainInterface";
+import eventListener from "./js/eventListener";
 
 export default {
   name: "app",
@@ -39,10 +40,15 @@ export default {
   created: async function() {
     console.log("DEX3 LOADED");
     var wethTokenAddr = await blockchain.getDex3BaseTokenAddr();
-    this.$store.dispatch("updateToken", wethTokenAddr);
-  //  this.$store.dispatch("updateToken", "0x201368dC6131E58Ba3fCe122187C669e6d21CD2F");
-    this.$store.dispatch("updateToken", "0xF91Ab4a50bfcFed2fAcc5dDB0E59Fb0f96164b19");
-  //  this.$store.dispatch("updateToken", "0xb6202bd9E3Db826a2E7a92d4FBD981d61942Cce2");
+
+    var tokensToAdd = [];
+    tokensToAdd.push(wethTokenAddr);
+    tokensToAdd.push("0xF91Ab4a50bfcFed2fAcc5dDB0E59Fb0f96164b19");
+
+    for (var i = 0; i < tokensToAdd.length; i++) {
+      this.$store.dispatch("updateToken", tokensToAdd[i]);
+      await eventListener.registerERC20Events(tokensToAdd[i]);
+    }
   }
 };
 </script>
