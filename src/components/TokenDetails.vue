@@ -1,54 +1,45 @@
 <template>
-  <div>
-    <p />
-    <md-card md-with-hover>
-      <md-card-header>
-        <div class="md-title">
-          <div>
-            {{ erc20Token.name }} / {{ erc20Token.symbol }}
-          </div>
-        </div>
-        <div class="md-subhead">{{ erc20Token.address }}</div>
-      </md-card-header>
-      <md-card-content>
-        <md-table>
-          <md-table-row>
-            <md-table-cell>Balance</md-table-cell>
-            <!-- <md-table-cell>{{ erc20Token.balance }}</md-table-cell> -->
-            <md-table-cell>{{ erc20Token.balanceHumanReadable }}</md-table-cell>            
-            <md-table-cell></md-table-cell>
-          </md-table-row>
-          <md-table-row>
-            <md-table-cell>DEX Allowance</md-table-cell>
-            <md-table-cell>{{ erc20Token.dexAllowanceHumanReadable }}</md-table-cell>
-            <md-table-cell>
-            <md-menu md-size="small">
-              <md-button md-menu-trigger class="md-icon-button md-primary">
-                <md-icon>edit</md-icon>
-              </md-button>
-              <md-menu-content>
-                <md-menu-item>
-                  <md-button
-                    md-menu-trigger
-                    class="md-raised md-accent"
-                    v-on:click="dexAllow"
-                  >DEX Allow</md-button>
-                </md-menu-item>
-                <md-menu-item>
-                  <md-button
-                    md-menu-trigger
-                    class="md-raised md-accent"
-                    v-on:click="dexDeny"
-                  >DEX Deny</md-button>
-                </md-menu-item>
-              </md-menu-content>
-            </md-menu>
-            </md-table-cell>
-          </md-table-row>
-        </md-table>
-      </md-card-content>
-    </md-card>
-  </div>
+  <v-card>
+    <v-card-title>{{ token.name }} - {{ token.symbol }}</v-card-title>
+    <v-card-subtitle>{{ token.address }}</v-card-subtitle>
+    <v-card-text>
+      <v-simple-table dense>
+        <tbody>
+          <tr>
+            <td>Balance</td>
+            <!-- <td>{{ token.balance }}</td> -->
+            <td>{{ token.balanceHumanReadable }}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>DEX Allowance</td>
+            <td>{{ token.dexAllowanceHumanReadable }}</td>
+            <td>
+              <v-menu offset-y>
+                <template v-slot:activator="{ on }">
+                  <v-btn text icon color="primary" v-on="on">
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-list-item-title>
+                      <v-btn color="warning" v-on:click="dexAllow" small block>DEX Allow</v-btn>
+                    </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title>
+                      <v-btn color="warning" v-on:click="dexDeny" small block>DEX Deny</v-btn>
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </td>
+          </tr>
+        </tbody>
+      </v-simple-table>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -56,41 +47,25 @@ import blockchain from "../js/blockchainInterface";
 
 export default {
   props: {
-    tokenAddress: {
-      type: String,
+    token: {
+      type: Object,
       required: true
     }
   },
-  data() {
-    return {
-      erc20Token: {}
-    };
-  },
-  computed: {
-     tokenValue: function() {
-       return "OK";
-     }
-  },
   created: async function() {
-    await this.refresh();
-    this.interval = setInterval(this.refresh, 2000);
+    this.interval = setInterval(this.refresh, 20000);
   },
   methods: {
     async dexAllow() {
-      await blockchain.dexAllow(
-        this.erc20Token.address,
-        this.erc20Token.balance
-      );
+      await blockchain.dexAllow(this.token.address, this.token.balance);
       await this.refresh();
     },
     async dexDeny() {
-      await blockchain.dexDeny(this.erc20Token.address);
+      await blockchain.dexDeny(this.token.address);
       await this.refresh();
     },
     async refresh() {
-      this.erc20Token = await blockchain.getPersonalTokenInfo(
-        this.tokenAddress
-      );
+      this.$store.dispatch("updateToken", this.token.address);
     }
   }
 };

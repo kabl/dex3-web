@@ -1,40 +1,46 @@
 <template>
   <div>
-    <md-table>
-      <md-table-row>
-        <md-table-cell>
-          <div style="text-align: left">Token Address</div>
-        </md-table-cell>
-        <md-table-cell style="width:100%;">
-          <md-field>
-            <md-input v-model="tokenaddress" placeholder="0x..."></md-input>
-          </md-field>
-        </md-table-cell>
-        <md-table-cell>
-          <md-button class="md-fab md-mini md-primary" v-on:click="onSubmit" :disabled="tokenaddress == null"><md-icon>add</md-icon></md-button>  
-        </md-table-cell>
-      </md-table-row>
-    </md-table>
+    <v-simple-table>
+      <tbody>
+        <tr>
+          <td style="width:100%;">
+            <v-input v-model="tokenaddress" placeholder="0x..."></v-input>
+            <v-text-field v-model="tokenaddress" label="Token address 0x..." required></v-text-field>
+          </td>
+          <td>
+            <v-btn
+              small
+              class="mx-2"
+              fab
+              color="indigo"
+              v-on:click="onSubmit"
+              :disabled="tokenaddress === ''"
+            >
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </td>
+        </tr>
+      </tbody>
+    </v-simple-table>
   </div>
 </template>
 <script>
-import blockchain from "../js/blockchainInterface";
+import eventListener from "../js/eventListener";
 
 export default {
   data() {
     return {
-      tokenaddress: null
+      tokenaddress: "0xb6202bd9E3Db826a2E7a92d4FBD981d61942Cce2"
     };
   },
   methods: {
     async onSubmit() {
-      // var web3 = blockchain.getWeb3();
-      blockchain.showMessage();
-      var info = await blockchain.getPersonalTokenInfo(this.tokenaddress);
-      console.log("info:", info);
+      console.log("info:", this.tokenaddress);
 
-      this.$emit("tokenaddress-submitted", info);
-      this.tokenaddress = null;
+      this.$emit("tokenaddress-submitted", this.tokenaddress);
+      await eventListener.registerERC20Events(this.tokenaddress);
+
+      this.tokenaddress = "";
     }
   }
 };

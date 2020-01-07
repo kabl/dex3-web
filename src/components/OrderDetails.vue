@@ -1,46 +1,38 @@
 <template>
   <div :v-if="order != null">
-    <md-table>
-      <md-table-row>
-        <md-table-cell>Token to Trade</md-table-cell>
-        <md-table-cell>{{ erc20Token.name }} / {{ erc20Token.symbol }}</md-table-cell>
-      </md-table-row>
-      <md-table-row>
-        <md-table-cell>Order Type</md-table-cell>
-        <md-table-cell>{{ orderType }}</md-table-cell>
-      </md-table-row>
-      <md-table-row>
-        <md-table-cell>Price</md-table-cell>
-        <md-table-cell>{{ humanPrice }}</md-table-cell>
-      </md-table-row>
-      <md-table-row>
-        <md-table-cell>Amount</md-table-cell>
-        <md-table-cell>{{ humanAmount }}</md-table-cell>
-      </md-table-row>
-      <md-table-row>
-        <md-table-cell>Fill Option</md-table-cell>
-        <md-table-cell>{{ fillOption }}</md-table-cell>
-      </md-table-row>
-      <md-table-row>
-        <md-table-cell>Lifetime</md-table-cell>
-        <md-table-cell>{{ order.ttl }}</md-table-cell>
-      </md-table-row>
-
-      <!-- <md-table-row>
-        <md-table-cell>Hash</md-table-cell>
-        <md-table-cell>{{ order.hash }}</md-table-cell>
-      </md-table-row>-->
-      <!-- <md-table-row>
-        <md-table-cell>Signature</md-table-cell>
-        <md-table-cell>{{ order.sig }}</md-table-cell>
-      </md-table-row>-->
-    </md-table>
-    <md-field>{{ description }}</md-field>
+    <v-simple-table dense>
+      <tbody>
+        <tr>
+          <td>Trading pair</td>
+          <td>{{ erc20Token.symbol }}/WETH</td>
+        </tr>
+        <tr>
+          <td>Order Type</td>
+          <td>{{ orderType }}</td>
+        </tr>
+        <tr>
+          <td>Available Position</td>
+          <td>{{ humanAmount }} @ {{ pricePerToken }} WETH</td>
+        </tr>
+        <tr>
+          <td>Fill Option</td>
+          <td>{{ fillOption }}</td>
+        </tr>
+        <tr>
+          <td>Lifetime</td>
+          <td>{{ expireDate }}</td>
+        </tr>
+      </tbody>
+    </v-simple-table>
+    <br>
+    <div>{{ description }}</div>
   </div>
 </template>
 
 <script>
-import blockchain from '../js/blockchainInterface';
+import blockchain from "../js/blockchainInterface";
+const BigNumber = require("bignumber.js");
+
 export default {
   props: {
     order: {
@@ -63,15 +55,38 @@ export default {
       if (this.order.partialFillAllowed == 1) return "Allow partial order fill";
       return "Error FillOption";
     },
+    pricePerToken: function() {
+      if (this.order === null) return -1;
+      const price = new BigNumber(this.order.price);
+      const amount = new BigNumber(this.order.amount);
+      return price.dividedBy(amount);
+    },
     humanAmount: function() {
-      return blockchain.toHumanNumber(this.order.amount, this.erc20Token.decimals);
+      return blockchain.toHumanNumber(
+        this.order.amount,
+        this.erc20Token.decimals
+      );
+    },
+    expireDate: function() {
+      var date = new Date(this.order.ttl*1000);
+      return date.toISOString();
     },
     humanPrice: function() {
       return blockchain.toHumanNumber(this.order.price, 18);
     },
     description: function() {
       var buySell = this.order.isSellOrder == 0 ? "buy" : "sell";
-      return "Market maker offers to " + buySell + " " + this.humanAmount + " " + this.erc20Token.symbol + " for " + this.humanPrice + " WETH."
+      return (
+        "Market maker offers to " +
+        buySell +
+        " " +
+        this.humanAmount +
+        " " +
+        this.erc20Token.symbol +
+        " for " +
+        this.humanPrice +
+        " WETH."
+      );
     }
   }
 };

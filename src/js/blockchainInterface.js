@@ -3,6 +3,7 @@ import Web3 from 'web3';
 import { ethers } from 'ethers';
 import erc20abi from '../abi/erc20abi';
 import dex3Abi from '../abi/dex3';
+import store from '../store'
 
 var web3 = new Web3(window.ethereum || "ws://localhost:8545");
 
@@ -13,20 +14,15 @@ window.ethereum.enable().then(function (addresses) {
 var blockchain = {
 
     getDex3Addr() {
-        return "0x7bd8D3C2E363c157b50373840239dA24BC3F7d57";
+        return store.getters.dex3Addr;
     },
 
     getWeb3() {
         return web3;
     },
 
-    showMessage() {
-        console.log("Message");
-    },
-
     async getERC20Instance(address) {
         var coinbase = await web3.eth.getCoinbase();
-        console.log("Coinbase:", coinbase);
         var erc20Instance = new web3.eth.Contract(erc20abi, address, {
             from: coinbase, // default from address
             gasPrice: "20000000000" // default gas price in wei, 20 gwei in this case
@@ -75,7 +71,6 @@ var blockchain = {
 
     async getDex3Instance() {
         var coinbase = await web3.eth.getCoinbase();
-        console.log("Coinbase:", coinbase);
         var dex3Instance = new web3.eth.Contract(dex3Abi, blockchain.getDex3Addr(), {
             from: coinbase, // default from address
             gasPrice: "20000000000" // default gas price in wei, 20 gwei in this case
@@ -84,9 +79,13 @@ var blockchain = {
         return dex3Instance;
     },
 
-    async getDex3BaseToken() {
+    async getDex3BaseTokenAddr() {
         var dex3 = await blockchain.getDex3Instance();
-        var baseTokenAddr = await dex3.methods.getBaseToken().call();
+        return await dex3.methods.getBaseToken().call();
+    },
+
+    async getDex3BaseToken() {
+        var baseTokenAddr = await blockchain.getDex3BaseTokenAddr();
         return await blockchain.getPersonalTokenInfo(baseTokenAddr);
     },
 
